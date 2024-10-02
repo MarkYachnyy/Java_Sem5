@@ -1,6 +1,12 @@
 package ru.vsu.cs.iachnyi_m_a.java.console_ui.component;
 
-public class TextLabel implements UIComponent {
+import lombok.Getter;
+import lombok.Setter;
+
+public class TextLabel implements ConsoleUIComponent {
+
+    @Getter
+    @Setter
     private String text;
 
     public TextLabel(String text) {
@@ -11,4 +17,5 @@ public class TextLabel implements UIComponent {
     public String getDrawableContent() {
         return text;
     }
+
 }

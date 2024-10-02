@@ -9,9 +9,12 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConsoleInterfaceApp {
+
+    public static final int SEPARATOR_DASH_COUNT = 40;
 
     private WindowFactory windowFactory;
     private Window currentWindow;
@@ -32,14 +35,16 @@ public class ConsoleInterfaceApp {
             outputStream.print("\033[H\033[2J");
             outputStream.flush();
             outputStream.println(currentWindow.getDrawableContent());
+            System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
             if(currentWindow.getInputState() == InputState.COMMAND){
                 HashMap<String, Command> commands = new HashMap<>();
                 for (int i = 0; i < currentWindow.getCommands().size(); i++) {
                     commands.put(String.valueOf(i+1), currentWindow.getCommands().get(i));
-                    System.out.println(String.format("[%d] %s", i + 1, currentWindow.getCommands().get(i).getName()));
+                    System.out.println(String.format("|[%d] %s", i + 1, currentWindow.getCommands().get(i).getName()));
                 }
-                System.out.println("Введите команду: ");
-                String commandKey = scanner.nextLine();
+                System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
+                System.out.print("Введите команду: ");
+                String commandKey = scanner.nextLine().strip();
                 Command command = commands.get(commandKey);
                 if(command != null){
                     command.execute();
@@ -47,7 +52,8 @@ public class ConsoleInterfaceApp {
                     System.out.println("Выбрана неверная команда");
                 }
             } else {
-                currentWindow.acceptInputValue(scanner.nextLine());
+                System.out.print("Введите значение поля:");
+                currentWindow.acceptInputValue(scanner.nextLine().strip());
             }
         }
     }
@@ -56,7 +62,7 @@ public class ConsoleInterfaceApp {
         running = false;
     }
 
-    public void setCurrentWindow(WindowType type, HashMap<String, Object> params){
+    public void setCurrentWindow(WindowType type, Map<String, Object> params){
         this.currentWindow = windowFactory.createWindow(type, params);
     }
 

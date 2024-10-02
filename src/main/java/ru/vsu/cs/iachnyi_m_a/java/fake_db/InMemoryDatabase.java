@@ -6,6 +6,7 @@ import ru.vsu.cs.iachnyi_m_a.java.entity.Seller;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.entity.Warehouse;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItem;
+import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItemId;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.Order;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItem;
 
@@ -47,6 +48,7 @@ public class InMemoryDatabase {
         User toInsert = new User(nextUserId, user.getName(), user.getEmail(), user.getPassword());
         users.add(toInsert);
         nextUserId++;
+        System.err.println(users);
         return new User(toInsert);
     }
 
@@ -156,6 +158,14 @@ public class InMemoryDatabase {
             toUpdate.setQuantity(cartItem.getQuantity());
             return new CartItem(toUpdate);
         } else return null;
+    }
+
+    public List<CartItem> getAllCartItems(){
+        return List.copyOf(this.cartItems);
+    }
+
+    public void deleteCartItem(CartItemId id){
+        cartItems.removeIf(ci -> ci.getId().equals(id));
     }
 
 }

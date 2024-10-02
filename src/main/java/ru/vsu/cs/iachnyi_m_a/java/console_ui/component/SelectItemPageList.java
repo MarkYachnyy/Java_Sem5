@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SelectItemPageList<T> implements UIComponent {
+public class SelectItemPageList<T> implements ConsoleUIComponent {
 
     private List<T> content;
     private int selectedIndex;
