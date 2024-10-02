@@ -11,12 +11,22 @@ public class SellerProfileWindow implements Window{
     }
 
     @Override
-    public void draw() {
-
+    public String getDrawableContent() {
+        return null;
     }
 
     @Override
     public List<Command> getCommands() {
         return null;
+    }
+
+    @Override
+    public InputState getInputState() {
+        return null;
+    }
+
+    @Override
+    public void acceptInputValue(String value) {
+
     }
 }

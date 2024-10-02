@@ -18,6 +18,10 @@ public class UserService {
         return repository.findByEmail(email).orElse(null);
     }
 
+    public User findUserById(long id) {
+        return repository.findById(id).orElse(null);
+    }
+
     public User registerUser(User user) {
         return repository.save(user);
     }
