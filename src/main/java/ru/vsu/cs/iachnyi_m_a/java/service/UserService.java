@@ -10,9 +10,11 @@ public class UserService {
     @Getter
     private static UserService instance = new UserService();
 
-    private UserRepository repository = UserRepositoryIMDB.getInstance();
+    private UserRepository repository;
 
-    private UserService() {}
+    private UserService() {
+        repository = UserRepositoryIMDB.getInstance();
+    }
 
     public User findUserByEmail(String email) {
         return repository.findByEmail(email).orElse(null);

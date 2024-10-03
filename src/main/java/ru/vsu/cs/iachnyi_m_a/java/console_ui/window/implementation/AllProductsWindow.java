@@ -2,8 +2,8 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.SelectItemPageList;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextLabel;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;

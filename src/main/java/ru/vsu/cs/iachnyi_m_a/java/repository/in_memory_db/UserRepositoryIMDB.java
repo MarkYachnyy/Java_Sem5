@@ -13,9 +13,11 @@ public class UserRepositoryIMDB implements UserRepository {
     @Getter
     private static UserRepositoryIMDB instance = new UserRepositoryIMDB();
 
-    private InMemoryDatabase database = InMemoryDatabase.getInstance();
+    private InMemoryDatabase database;
 
-    private UserRepositoryIMDB(){}
+    private UserRepositoryIMDB(){
+        database = InMemoryDatabase.getInstance();
+    }
 
     @Override
     public Optional<User> findById(Long id) {
