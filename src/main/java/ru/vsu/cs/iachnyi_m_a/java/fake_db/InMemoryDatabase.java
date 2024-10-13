@@ -20,6 +20,13 @@ public class InMemoryDatabase {
     private static final InMemoryDatabase instance = new InMemoryDatabase();
 
     private InMemoryDatabase() {
+        this.sellers = new ArrayList<>();
+        this.users = new ArrayList<>();
+        this.products = new ArrayList<>();
+        this.warehouses = new ArrayList<>();
+        this.cartItems = new ArrayList<>();
+        this.orderItems = new ArrayList<>();
+
         Random random = new Random();
         for (int i = 1; i <= 2; i++) {
             insertUser(new User(0, "user" + i, "email" + i + "@gmail.com", "password" + i));
@@ -38,7 +45,7 @@ public class InMemoryDatabase {
         }
     }
 
-    private final List<User> users = new ArrayList<User>();
+    private final List<User> users;
     private long nextUserId = 1;
 
     public User insertUser(User user) {
@@ -65,7 +72,7 @@ public class InMemoryDatabase {
         return List.copyOf(users);
     }
 
-    private final List<Product> products = new ArrayList<Product>();
+    private final List<Product> products;
     private long nextProductId = 1;
 
     public Product insertProduct(Product product) {
@@ -92,7 +99,7 @@ public class InMemoryDatabase {
         return List.copyOf(products);
     }
 
-    private final List<Seller> sellers = new ArrayList<>();
+    private final List<Seller> sellers;
     private long nextSellerId = 1;
 
     public Seller insertSeller(Seller seller) {
@@ -109,7 +116,7 @@ public class InMemoryDatabase {
         return List.copyOf(sellers);
     }
 
-    private final List<Warehouse> warehouses = new ArrayList<>();
+    private final List<Warehouse> warehouses;
     private long nextWarehouseId = 1;
 
     public Warehouse insertWarehouse(Warehouse warehouse) {
@@ -129,7 +136,7 @@ public class InMemoryDatabase {
         return new Order(toInsert);
     }
 
-    private final List<OrderItem> orderItems = new ArrayList<>();
+    private final List<OrderItem> orderItems;
 
     public OrderItem insertOrderItem(OrderItem orderItem) {
         if(orderItems.stream().anyMatch(oi -> oi.getId().equals( orderItem.getId()))) {
@@ -140,7 +147,7 @@ public class InMemoryDatabase {
         return new OrderItem(toInsert);
     }
 
-    private final List<CartItem> cartItems = new ArrayList<>();
+    private final List<CartItem> cartItems;
 
     public CartItem insertCartItem(CartItem cartItem) {
         if(cartItems.stream().anyMatch(ci -> ci.getId().equals(cartItem.getId()))) {
