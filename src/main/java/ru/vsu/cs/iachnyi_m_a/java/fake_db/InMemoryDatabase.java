@@ -48,7 +48,6 @@ public class InMemoryDatabase {
         User toInsert = new User(nextUserId, user.getName(), user.getEmail(), user.getPassword());
         users.add(toInsert);
         nextUserId++;
-        System.err.println(users);
         return new User(toInsert);
     }
 

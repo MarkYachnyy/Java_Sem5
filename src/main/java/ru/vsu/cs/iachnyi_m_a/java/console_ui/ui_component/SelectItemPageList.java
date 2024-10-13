@@ -1,4 +1,4 @@
-package ru.vsu.cs.iachnyi_m_a.java.console_ui.component;
+package ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component;
 
 import lombok.Getter;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;

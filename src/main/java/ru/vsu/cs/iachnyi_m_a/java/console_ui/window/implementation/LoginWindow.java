@@ -2,8 +2,8 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextInput;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextLabel;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInput;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
@@ -82,7 +82,6 @@ public class LoginWindow implements Window {
                     TextLabelStatus.setText("Не все поля заполнены");
                 } else {
                     User existing = userService.findUserByEmail(TextInputEmail.getValue());
-                    System.err.println(existing);
                     if(existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
                         TextLabelStatus.setText("Неверная почта или пароль");
                     } else {

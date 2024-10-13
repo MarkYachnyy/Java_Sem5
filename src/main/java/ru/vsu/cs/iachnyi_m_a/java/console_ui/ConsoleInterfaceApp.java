@@ -37,10 +37,10 @@ public class ConsoleInterfaceApp {
             outputStream.println(currentWindow.getDrawableContent());
             System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
             if(currentWindow.getInputState() == InputState.COMMAND){
-                HashMap<String, Command> commands = new HashMap<>();
+                Map<String, Command> commands = new HashMap<>();
                 for (int i = 0; i < currentWindow.getCommands().size(); i++) {
                     commands.put(String.valueOf(i+1), currentWindow.getCommands().get(i));
-                    System.out.println(String.format("|[%d] %s", i + 1, currentWindow.getCommands().get(i).getName()));
+                    System.out.printf("|[%d] %s%n", i + 1, currentWindow.getCommands().get(i).getName());
                 }
                 System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
                 System.out.print("Введите команду: ");
