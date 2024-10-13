@@ -7,6 +7,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
+import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 
@@ -39,13 +40,15 @@ public class RegisterWindow implements Window {
     private UserService userService;
 
     public RegisterWindow(ConsoleInterfaceApp app, Map<String, Object> params) {
+        userService = ApplicationContextProvider.getContext().getBean(UserService.class);
+
         TextLabelHeader = new TextLabel("Зарегистрировать аккаунт");
         TextInputName = new TextInput("Имя");
         TextInputEmail = new TextInput("Почта");
         TextInputPassword = new TextInput("Пароль");
         TextInputPasswordConfirm = new TextInput("Подтвердите пароль");
         TextLabelStatus = new TextLabel("");
-        userService = UserService.getInstance();
+
         inputState = InputState.COMMAND;
         commandEnterName = new Command() {
             @Override

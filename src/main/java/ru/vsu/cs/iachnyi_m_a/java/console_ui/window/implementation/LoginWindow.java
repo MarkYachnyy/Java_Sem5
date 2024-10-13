@@ -7,6 +7,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
+import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 
@@ -37,7 +38,7 @@ public class LoginWindow implements Window {
 
     public LoginWindow(ConsoleInterfaceApp app, Map<String, Object> params) {
         inputState = InputState.COMMAND;
-        userService = UserService.getInstance();
+        userService = ApplicationContextProvider.getContext().getBean(UserService.class);
 
         TextLabelHeader = new TextLabel("Войти в аккаунт");
         TextLabelStatus = new TextLabel("");

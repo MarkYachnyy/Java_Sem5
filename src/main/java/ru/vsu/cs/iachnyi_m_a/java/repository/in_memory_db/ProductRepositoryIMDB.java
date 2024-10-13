@@ -11,12 +11,11 @@ import java.util.stream.Collectors;
 
 public class ProductRepositoryIMDB implements ProductRepository {
 
-    @Getter
-    private static ProductRepositoryIMDB instance = new ProductRepositoryIMDB();
+    public ProductRepositoryIMDB(InMemoryDatabase database) {
+        this.inMemoryDatabase = database;
+    }
 
-    private ProductRepositoryIMDB() {}
-
-    private InMemoryDatabase inMemoryDatabase = InMemoryDatabase.getInstance();
+    private InMemoryDatabase inMemoryDatabase;
 
     @Override
     public Optional<Product> findById(Long id) {

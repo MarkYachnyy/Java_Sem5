@@ -7,6 +7,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
+import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.entity.Product;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.service.ProductService;
@@ -31,11 +32,11 @@ public class AllProductsWindow implements Window {
     private User user;
 
     public AllProductsWindow(ConsoleInterfaceApp app, Map<String, Object> params) {
-        userService = UserService.getInstance();
-        user = params.get("userId") == null ? null : userService.findUserById((Long) params.get("userId"));
+        userService = ApplicationContextProvider.getContext().getBean(UserService.class);
+        productService = ApplicationContextProvider.getContext().getBean(ProductService.class);
 
+        user = params.get("userId") == null ? null : userService.findUserById((Long) params.get("userId"));
         inputState = InputState.COMMAND;
-        productService = ProductService.getInstance();
 
         LabelTitle = new TextLabel("Все товары");
         SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts(), product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии");

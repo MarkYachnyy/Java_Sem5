@@ -1,13 +1,13 @@
 package ru.vsu.cs.iachnyi_m_a.java.service;
 
 import lombok.Getter;
+import ru.vsu.cs.iachnyi_m_a.java.repository.SellerRepository;
 
 public class SellerService {
 
-    @Getter
-    private static SellerService instance = new SellerService();
+    private SellerRepository repository;
 
-    private SellerService() {
-
+    public SellerService(SellerRepository repository) {
+        this.repository = repository;
     }
 }

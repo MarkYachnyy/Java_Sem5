@@ -10,12 +10,11 @@ import java.util.Optional;
 
 public class UserRepositoryIMDB implements UserRepository {
 
-    @Getter
-    private static UserRepositoryIMDB instance = new UserRepositoryIMDB();
+    private InMemoryDatabase database;
 
-    private InMemoryDatabase database = InMemoryDatabase.getInstance();
-
-    private UserRepositoryIMDB(){}
+    public UserRepositoryIMDB(InMemoryDatabase database){
+        this.database = database;
+    }
 
     @Override
     public Optional<User> findById(Long id) {

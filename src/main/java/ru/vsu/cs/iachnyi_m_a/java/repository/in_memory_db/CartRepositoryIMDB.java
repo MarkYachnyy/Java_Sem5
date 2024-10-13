@@ -11,12 +11,11 @@ import java.util.Optional;
 
 public class CartRepositoryIMDB implements CartRepository {
 
-    @Getter
-    private static CartRepositoryIMDB instance = new CartRepositoryIMDB();
+    private InMemoryDatabase database;
 
-    private InMemoryDatabase database = InMemoryDatabase.getInstance();
-
-    private CartRepositoryIMDB() {}
+    public CartRepositoryIMDB(InMemoryDatabase database) {
+        this.database = database;
+    }
 
     @Override
     public List<CartItem> findAllByUserId(long userId) {

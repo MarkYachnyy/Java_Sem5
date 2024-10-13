@@ -9,12 +9,11 @@ import java.util.List;
 
 public class ProductService {
 
-    @Getter
-    private static ProductService instance = new ProductService();
+    public ProductService(ProductRepository repository){
+        this.repository = repository;
+    }
 
-    private ProductService(){}
-
-    private ProductRepository repository = ProductRepositoryIMDB.getInstance();
+    private ProductRepository repository;
 
     public Product getProductById(long id){
         return repository.findById(id).orElse(null);

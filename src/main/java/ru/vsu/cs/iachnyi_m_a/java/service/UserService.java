@@ -7,12 +7,11 @@ import ru.vsu.cs.iachnyi_m_a.java.repository.in_memory_db.UserRepositoryIMDB;
 
 public class UserService {
 
-    @Getter
-    private static UserService instance = new UserService();
+    private UserRepository repository;
 
-    private UserRepository repository = UserRepositoryIMDB.getInstance();
-
-    private UserService() {}
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public User findUserByEmail(String email) {
         return repository.findByEmail(email).orElse(null);

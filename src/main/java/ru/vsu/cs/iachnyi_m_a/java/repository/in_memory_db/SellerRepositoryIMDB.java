@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public class SellerRepositoryIMDB implements SellerRepository {
 
-    private InMemoryDatabase database = InMemoryDatabase.getInstance();
+    private InMemoryDatabase database;
+
+    public SellerRepositoryIMDB(InMemoryDatabase database) {
+        this.database = database;
+    }
 
     @Override
     public Optional<Seller> findById(Long id) {
@@ -23,7 +27,7 @@ public class SellerRepositoryIMDB implements SellerRepository {
 
     @Override
     public Seller save(Seller entity) {
-        if(database.getAllSellers().stream().anyMatch(seller -> seller.getId() == entity.getId())) {
+        if (database.getAllSellers().stream().anyMatch(seller -> seller.getId() == entity.getId())) {
             return database.insertSeller(entity);
         } else {
             return null;
