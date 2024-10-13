@@ -81,7 +81,6 @@ public class LoginWindow implements Window {
                     TextLabelStatus.setText("Не все поля заполнены");
                 } else {
                     User existing = userService.findUserByEmail(TextInputEmail.getValue());
-                    System.err.println(existing);
                     if(existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
                         TextLabelStatus.setText("Неверная почта или пароль");
                     } else {

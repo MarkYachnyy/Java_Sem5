@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public class SellerRepositoryIMDB implements SellerRepository {
 
+    public SellerRepositoryIMDB(){
+        database = InMemoryDatabase.getInstance();
+    }
+
     private InMemoryDatabase database = InMemoryDatabase.getInstance();
 
     @Override
