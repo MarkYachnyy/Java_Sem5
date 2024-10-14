@@ -1,6 +1,7 @@
 package ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component;
 
 import lombok.Getter;
+import lombok.NonNull;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
+                if (content.isEmpty()) return;
                 if (selectedIndex == 0) {
                     if (page > 0) {
                         selectedIndex = itemsOnPage - 1;
@@ -58,6 +60,8 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
+                if(content.isEmpty()) return;
+                if(page == pageCount - 1 && selectedIndex == content.size() % itemsOnPage - 1) return;
                 if (selectedIndex == itemsOnPage - 1) {
                     if (page < pageCount - 1) {
                         selectedIndex = 0;
@@ -76,6 +80,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
+                if(content.isEmpty()) return;
                 if (page > 0) {
                     page--;
                     selectedIndex = 0;
@@ -90,6 +95,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
+                if(content.isEmpty()) return;
                 if (page < pageCount - 1) {
                     page++;
                     selectedIndex = 0;
@@ -99,7 +105,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
     }
 
     public T getSelectedItem() {
-        return content.get(selectedIndex + page * itemsOnPage);
+        return content.isEmpty() ? null : content.get(selectedIndex + page * itemsOnPage);
     }
 
     @Override

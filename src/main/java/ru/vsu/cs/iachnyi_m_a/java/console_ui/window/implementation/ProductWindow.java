@@ -159,6 +159,24 @@ public class ProductWindow implements Window {
                 }
             }
         };
+
+        commandOpenCartWindow = new Command() {
+            @Override
+            public String getName() {
+                return "Открыть корзину";
+            }
+
+            @Override
+            public void execute() {
+                if (user == null) {
+                    commandLoginLogout.execute();
+                } else {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("userId", user.getId());
+                    app.setCurrentWindow(WindowType.CART, params);
+                }
+            }
+        };
     }
 
     @Override
@@ -169,7 +187,7 @@ public class ProductWindow implements Window {
 
     @Override
     public List<Command> getCommands() {
-        return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow, commandAddToCart, commandRemoveFromCart, commandLoginLogout);
+        return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow, commandAddToCart, commandRemoveFromCart, commandOpenCartWindow, commandLoginLogout);
     }
 
     @Override

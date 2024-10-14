@@ -30,6 +30,7 @@ public class SellerProfileWindow implements Window {
 
     private Command commandOpenProduct;
     private Command commandLoginLogout;
+    private Command commandOpenCartWindow;
 
     private Seller seller;
     private User user;
@@ -77,6 +78,24 @@ public class SellerProfileWindow implements Window {
                 }
             }
         };
+
+        commandOpenCartWindow = new Command() {
+            @Override
+            public String getName() {
+                return "Открыть корзину";
+            }
+
+            @Override
+            public void execute() {
+                if(user == null){
+                    commandLoginLogout.execute();
+                } else {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("userId", user.getId());
+                    app.setCurrentWindow(WindowType.CART, params);
+                }
+            }
+        };
     }
 
     @Override
@@ -89,7 +108,7 @@ public class SellerProfileWindow implements Window {
     public List<Command> getCommands() {
         return List.of(ListProducts.getSelectDownCommand(), ListProducts.getSelectUpCommand(),
                 ListProducts.getSelectPreviousPageCommand(), ListProducts.getSelectNextPageCommand(),
-                commandOpenProduct, commandLoginLogout);
+                commandOpenProduct, commandOpenCartWindow, commandLoginLogout);
     }
 
     @Override

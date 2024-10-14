@@ -11,6 +11,7 @@ import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,8 @@ public class LoginWindow implements Window {
                     if(existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
                         TextLabelStatus.setText("Неверная почта или пароль");
                     } else {
+                        TextInputEmail.setValue(null);
+                        TextInputPassword.setValue(null);
                         TextLabelStatus.setText("Успешный вход в аккаунт под именем " + existing.getName());
                         user = existing;
                     }
@@ -129,7 +132,9 @@ public class LoginWindow implements Window {
 
     @Override
     public List<Command> getCommands() {
-        return List.of(commandEnterEmail, commandEnterPassword, commandConfirmLogin, commandOpenRegisterWindow, commandOpenAllProductsWindow);
+        List<Command> res = new ArrayList<>(List.of(commandEnterEmail, commandEnterPassword, commandConfirmLogin, commandOpenAllProductsWindow));
+        if(user == null) res.add(commandOpenRegisterWindow);
+        return res;
     }
 
     @Override

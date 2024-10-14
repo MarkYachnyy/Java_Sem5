@@ -19,7 +19,7 @@ public class CartRepositoryIMDB implements CartRepository {
 
     @Override
     public List<CartItem> findAllByUserId(long userId) {
-        return List.of();
+        return database.getAllCartItems().stream().filter(ci -> ci.getId().getUserId() == userId).toList();
     }
 
     @Override

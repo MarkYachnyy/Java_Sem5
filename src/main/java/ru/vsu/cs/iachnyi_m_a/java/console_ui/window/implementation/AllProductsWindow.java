@@ -27,6 +27,7 @@ public class AllProductsWindow implements Window {
 
     private Command commandOpenProductWindow;
     private Command commandLoginLogout;
+    private Command commandOpenCartWindow;
 
     private UserService userService;
     private User user;
@@ -72,6 +73,24 @@ public class AllProductsWindow implements Window {
                 }
             }
         };
+
+        commandOpenCartWindow = new Command() {
+            @Override
+            public String getName() {
+                return "Открыть корзину";
+            }
+
+            @Override
+            public void execute() {
+                if(user == null) {
+                    commandLoginLogout.execute();
+                } else {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("userId", user.getId());
+                    app.setCurrentWindow(WindowType.CART, params);
+                }
+            }
+        };
     }
 
     @Override
@@ -84,7 +103,7 @@ public class AllProductsWindow implements Window {
 
         return List.of(SelectItemPageListProduct.getSelectUpCommand(), SelectItemPageListProduct.getSelectDownCommand(),
                 SelectItemPageListProduct.getSelectNextPageCommand(),
-                SelectItemPageListProduct.getSelectPreviousPageCommand(), commandOpenProductWindow, commandLoginLogout);
+                SelectItemPageListProduct.getSelectPreviousPageCommand(), commandOpenProductWindow, commandOpenCartWindow, commandLoginLogout);
     }
 
     @Override
