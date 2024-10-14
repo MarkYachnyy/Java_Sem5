@@ -14,6 +14,10 @@ public class CartService {
         this.repository = repository;
     }
 
+    public CartItem getCartItemByUserIdAndProductId(Long userId, Long productId) {
+        return repository.findById(new CartItemId(userId, productId)).orElse(null);
+    }
+
     public List<CartItem> getCartOfUser(Long userId){
         return repository.findAllByUserId(userId);
     }
