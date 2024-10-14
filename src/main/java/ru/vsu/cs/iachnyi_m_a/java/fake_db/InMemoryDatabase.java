@@ -31,16 +31,16 @@ public class InMemoryDatabase {
         for (int i = 1; i <= 2; i++) {
             insertUser(new User(0, "user" + i, "email" + i + "@gmail.com", "password" + i));
         }
+        insertUser(new User(0, "m", "m", "m"));
         for (int i = 1; i <= 5; i++) {
-            sellers.add(new Seller(i, "Продавец" + i));
+            insertSeller(new Seller(0, "Продавец" + i));
         }
         for (int i = 1; i <= 2; i++) {
-            warehouses.add(new Warehouse(i, "Склад" + i));
+            insertWarehouse(new Warehouse(0, "Склад" + i));
         }
-        for (int j = 0; j < sellers.size(); j++) {
-            Seller seller = sellers.get(j);
+        for (Seller seller : sellers) {
             for (int i = 1; i <= 5; i++) {
-                products.add(new Product(i + 5L * j, seller.getId(), warehouses.get(random.nextInt(warehouses.size())).getId(), "Товар" + i + "Продавца" + seller.getId(), i * 100, 5));
+                insertProduct(new Product(0, seller.getId(), warehouses.get(random.nextInt(warehouses.size())).getId(), "Товар" + i + "Продавца" + seller.getId(), i * 100, 5));
             }
         }
     }
@@ -49,7 +49,7 @@ public class InMemoryDatabase {
     private long nextUserId = 1;
 
     public User insertUser(User user) {
-        if(users.stream().anyMatch(u -> u.getEmail().equals(user.getEmail()))) {
+        if (users.stream().anyMatch(u -> u.getEmail().equals(user.getEmail()))) {
             throw new RuntimeException("User with such email already exists");
         }
         User toInsert = new User(nextUserId, user.getName(), user.getEmail(), user.getPassword());
@@ -103,7 +103,7 @@ public class InMemoryDatabase {
     private long nextSellerId = 1;
 
     public Seller insertSeller(Seller seller) {
-        if(sellers.stream().anyMatch(s -> s.getName().equals(seller.getName()))) {
+        if (sellers.stream().anyMatch(s -> s.getName().equals(seller.getName()))) {
             throw new RuntimeException("Seller with such name already exists");
         }
         Seller toInsert = new Seller(nextSellerId, seller.getName());
@@ -112,7 +112,7 @@ public class InMemoryDatabase {
         return new Seller(toInsert);
     }
 
-    public List<Seller> getAllSellers(){
+    public List<Seller> getAllSellers() {
         return List.copyOf(sellers);
     }
 
@@ -139,7 +139,7 @@ public class InMemoryDatabase {
     private final List<OrderItem> orderItems;
 
     public OrderItem insertOrderItem(OrderItem orderItem) {
-        if(orderItems.stream().anyMatch(oi -> oi.getId().equals( orderItem.getId()))) {
+        if (orderItems.stream().anyMatch(oi -> oi.getId().equals(orderItem.getId()))) {
             throw new RuntimeException("OrderItem with such id already exists");
         }
         OrderItem toInsert = new OrderItem(orderItem);
@@ -150,7 +150,7 @@ public class InMemoryDatabase {
     private final List<CartItem> cartItems;
 
     public CartItem insertCartItem(CartItem cartItem) {
-        if(cartItems.stream().anyMatch(ci -> ci.getId().equals(cartItem.getId()))) {
+        if (cartItems.stream().anyMatch(ci -> ci.getId().equals(cartItem.getId()))) {
             throw new RuntimeException("CartItem with such id already exists");
         }
         CartItem toInsert = new CartItem(cartItem);
@@ -166,11 +166,11 @@ public class InMemoryDatabase {
         } else return null;
     }
 
-    public List<CartItem> getAllCartItems(){
+    public List<CartItem> getAllCartItems() {
         return List.copyOf(this.cartItems);
     }
 
-    public void deleteCartItem(CartItemId id){
+    public void deleteCartItem(CartItemId id) {
         cartItems.removeIf(ci -> ci.getId().equals(id));
     }
 

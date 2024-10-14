@@ -39,6 +39,7 @@ public class ProductWindow implements Window {
     private Command commandOpenCartWindow;
     private Command commandOpenSellerProfileWindow;
     private Command commandOpenAllProductsWindow;
+    private Command commandLoginLogout;
 
     private TextLabel TextLabelHeader;
     private TextLabel TextLabelProductInfo;
@@ -69,7 +70,10 @@ public class ProductWindow implements Window {
 
             @Override
             public void execute() {
-
+                Map<String, Object> params = new HashMap<>();
+                params.put("sellerId", product.getSellerId());
+                if(user != null) params.put("userId", user.getId());
+                app.setCurrentWindow(WindowType.SELLER_PROFILE, params);
             }
         };
 
@@ -86,6 +90,22 @@ public class ProductWindow implements Window {
                 app.setCurrentWindow(WindowType.ALL_PRODUCTS, params);
             }
         };
+
+        commandLoginLogout = new Command() {
+            @Override
+            public String getName() {
+                return user == null ? "Войти в аккаунт" : String.format("Выполнен вход под именем %s. Выберите, чтобы выйти", user.getName());
+            }
+
+            @Override
+            public void execute() {
+                if (user == null) {
+                    app.setCurrentWindow(WindowType.LOGIN, new HashMap<>());
+                } else {
+                    user = null;
+                }
+            }
+        };
     }
 
     @Override
@@ -96,7 +116,7 @@ public class ProductWindow implements Window {
 
     @Override
     public List<Command> getCommands() {
-        return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow);
+        return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow, commandLoginLogout);
     }
 
     @Override

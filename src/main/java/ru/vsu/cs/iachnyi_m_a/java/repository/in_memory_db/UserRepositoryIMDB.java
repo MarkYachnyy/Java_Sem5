@@ -19,14 +19,12 @@ public class UserRepositoryIMDB implements UserRepository {
     @Override
     public Optional<User> findById(Long id) {
         Optional<User> res = database.getAllUsers().stream().filter(user -> user.getId() == id).findFirst();
-        System.err.println("found user by id: " + res);
         return res;
     }
 
     @Override
     public List<User> findAll() {
         List<User> res = database.getAllUsers();
-        System.err.println("found users: " + res);
         return res;
     }
 
@@ -34,10 +32,8 @@ public class UserRepositoryIMDB implements UserRepository {
     public User save(User entity) {
         List<User> allUsers = database.getAllUsers();
         if (allUsers.stream().anyMatch(user -> user.getId() == entity.getId())) {
-            System.err.println("updating user: " + entity);
             return database.updateUser(entity);
         } else {
-            System.err.println("creating user: " + entity);
             return database.insertUser(entity);
         }
     }
@@ -48,7 +44,6 @@ public class UserRepositoryIMDB implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         Optional<User> res = database.getAllUsers().stream().filter(user -> user.getEmail().equals(email)).findFirst();
-        System.err.println("found user by email: " + res);
         return res;
     }
 }

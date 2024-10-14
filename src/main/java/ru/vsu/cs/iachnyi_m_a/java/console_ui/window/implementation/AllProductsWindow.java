@@ -52,6 +52,7 @@ public class AllProductsWindow implements Window {
                 Long productId = SelectItemPageListProduct.getSelectedItem().getId();
                 HashMap<String, Object> params = new HashMap<>();
                 params.put("productId", productId);
+                if (user != null) params.put("userId", user.getId());
                 app.setCurrentWindow(WindowType.PRODUCT, params);
             }
         };
@@ -64,7 +65,7 @@ public class AllProductsWindow implements Window {
 
             @Override
             public void execute() {
-                if(user == null) {
+                if (user == null) {
                     app.setCurrentWindow(WindowType.LOGIN, new HashMap<>());
                 } else {
                     user = null;
@@ -93,7 +94,7 @@ public class AllProductsWindow implements Window {
 
     @Override
     public void acceptInputValue(String value) {
-        if(inputState == InputState.COMMAND) {
+        if (inputState == InputState.COMMAND) {
             throw new IllegalStateException("Trying to pass input value while the window is in COMMAND input state");
         }
     }
