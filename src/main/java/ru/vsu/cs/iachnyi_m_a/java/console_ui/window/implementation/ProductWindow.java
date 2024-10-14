@@ -151,11 +151,11 @@ public class ProductWindow implements Window {
                         cartService.saveCartItem(cartItem);
                     } else if(cartItem.getQuantity() == 1){
                         cartService.deleteCartItem(cartItem.getId());
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("userId", user.getId());
-                        params.put("productId", product.getId());
-                        app.setCurrentWindow(WindowType.PRODUCT, params);
                     }
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("userId", user.getId());
+                    params.put("productId", product.getId());
+                    app.setCurrentWindow(WindowType.PRODUCT, params);
                 }
             }
         };
