@@ -115,7 +115,7 @@ public class LoginWindow implements Window {
             @Override
             public void execute() {
                 Map<String, Object> params = new HashMap<>();
-                params.put("userId", user.getId());
+                if (user != null) params.put("userId", user.getId());
                 app.setCurrentWindow(WindowType.ALL_PRODUCTS, params);
             }
         };

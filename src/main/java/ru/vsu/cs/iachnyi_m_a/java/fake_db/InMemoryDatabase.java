@@ -83,7 +83,7 @@ public class InMemoryDatabase {
         return new Product(toInsert);
     }
 
-    private Product updateProduct(Product product) {
+    public Product updateProduct(Product product) {
         Product toUpdate = products.stream().filter(product1 -> product1.getId() == product.getId()).findFirst().orElse(null);
         if (toUpdate != null) {
             toUpdate.setSellerId(product.getSellerId());
@@ -136,6 +136,10 @@ public class InMemoryDatabase {
         return new Order(toInsert);
     }
 
+    public List<Order> getAllOrders(){
+        return List.copyOf(orders);
+    }
+
     private final List<OrderItem> orderItems;
 
     public OrderItem insertOrderItem(OrderItem orderItem) {
@@ -145,6 +149,10 @@ public class InMemoryDatabase {
         OrderItem toInsert = new OrderItem(orderItem);
         orderItems.add(toInsert);
         return new OrderItem(toInsert);
+    }
+
+    public List<OrderItem> getAllOrderItems(){
+        return List.copyOf(orderItems);
     }
 
     private final List<CartItem> cartItems;

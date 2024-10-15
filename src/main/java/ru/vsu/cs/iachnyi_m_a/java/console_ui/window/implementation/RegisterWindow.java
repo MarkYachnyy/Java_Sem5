@@ -119,7 +119,7 @@ public class RegisterWindow implements Window {
                     if (existing != null) {
                         TextLabelStatus.setText("Пользователь с таким email существует");
                     } else {
-                        userService.registerUser(new User(0, TextInputEmail.getValue(), TextInputName.getValue(), TextInputPassword.getValue()));
+                        userService.registerUser(new User(0, TextInputName.getValue(), TextInputEmail.getValue(), TextInputPassword.getValue()));
                         TextInputName.setValue(null);
                         TextInputEmail.setValue(null);
                         TextInputPassword.setValue(null);

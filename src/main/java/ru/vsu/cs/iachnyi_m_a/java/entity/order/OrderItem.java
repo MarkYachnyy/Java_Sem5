@@ -1,8 +1,10 @@
 package ru.vsu.cs.iachnyi_m_a.java.entity.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class OrderItem {
     private OrderItemId id;
     private int amount;
