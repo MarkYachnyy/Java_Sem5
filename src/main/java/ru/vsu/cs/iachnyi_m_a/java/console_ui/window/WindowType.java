@@ -7,5 +7,6 @@ public enum WindowType {
     CART,
     ORDER,
     SELLER_PROFILE,
-    LOGIN
+    LOGIN,
+    CHECKOUT
 }

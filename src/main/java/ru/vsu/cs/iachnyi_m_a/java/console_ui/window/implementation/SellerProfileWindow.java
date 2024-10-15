@@ -46,7 +46,7 @@ public class SellerProfileWindow implements Window {
 
         TextLabelHeader = new TextLabel("Профиль продавца " + seller.getName());
         ListProducts = new SelectItemPageList<>(5, productService.getAllProductsOfSeller(seller.getId()),
-                product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии");
+                product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии", true);
 
         commandOpenProduct = new Command() {
             @Override

@@ -20,6 +20,7 @@ public class WindowFactory {
         windows.put(WindowType.SELLER_PROFILE, params -> new SellerProfileWindow(app, params));
         windows.put(WindowType.REGISTER, params -> new RegisterWindow(app, params));
         windows.put(WindowType.LOGIN, params -> new LoginWindow(app, params));
+        windows.put(WindowType.CHECKOUT, params -> new CheckoutWindow(app, params));
     }
 
     public Window createWindow(WindowType type, Map<String, Object> params) {

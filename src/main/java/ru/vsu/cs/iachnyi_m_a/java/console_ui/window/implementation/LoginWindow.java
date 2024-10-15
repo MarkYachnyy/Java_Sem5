@@ -79,11 +79,11 @@ public class LoginWindow implements Window {
 
             @Override
             public void execute() {
-                if(TextInputEmail.getValue() == null || TextInputPassword.getValue() == null) {
+                if (TextInputEmail.getValue() == null || TextInputPassword.getValue() == null) {
                     TextLabelStatus.setText("Не все поля заполнены");
                 } else {
                     User existing = userService.findUserByEmail(TextInputEmail.getValue());
-                    if(existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
+                    if (existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
                         TextLabelStatus.setText("Неверная почта или пароль");
                     } else {
                         TextInputEmail.setValue(null);
@@ -125,7 +125,7 @@ public class LoginWindow implements Window {
     public String getDrawableContent() {
         return TextLabelHeader.getDrawableContent() + '\n' +
                 "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                Stream.of(TextInputEmail,TextInputPassword).
+                Stream.of(TextInputEmail, TextInputPassword).
                         map(input -> input == currentTextInput ? "\033[43m" + input.getDrawableContent() + "\033[0m" : input.getDrawableContent()).
                         collect(Collectors.joining("\n")) + '\n' + "\033[43m" + TextLabelStatus.getDrawableContent() + "\033[0m";
     }
@@ -133,7 +133,7 @@ public class LoginWindow implements Window {
     @Override
     public List<Command> getCommands() {
         List<Command> res = new ArrayList<>(List.of(commandEnterEmail, commandEnterPassword, commandConfirmLogin, commandOpenAllProductsWindow));
-        if(user == null) res.add(commandOpenRegisterWindow);
+        if (user == null) res.add(commandOpenRegisterWindow);
         return res;
     }
 
@@ -144,7 +144,7 @@ public class LoginWindow implements Window {
 
     @Override
     public void acceptInputValue(String value) {
-        if(currentTextInput != null && !"".equals(value)) {
+        if (currentTextInput != null && !"".equals(value)) {
             currentTextInput.setValue(value);
         }
         inputState = InputState.COMMAND;

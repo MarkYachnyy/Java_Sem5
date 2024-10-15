@@ -25,11 +25,11 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
     @Getter
     private Command selectPreviousPageCommand;
 
-    public SelectItemPageList(int itemsOnPage, List<T> content, Function<T, String> adapter) {
+    public SelectItemPageList(int itemsOnPage, List<T> content, Function<T, String> adapter, boolean selectable) {
         this.itemsOnPage = itemsOnPage;
         this.content = content;
         this.adapter = adapter;
-        this.selectedIndex = 0;
+        this.selectedIndex = selectable ? 0 : -1;
         this.page = 0;
         int pageCount = content.size() / itemsOnPage + (content.size() % itemsOnPage == 0 ? 0 : 1);
         selectUpCommand = new Command() {
@@ -40,7 +40,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
-                if (content.isEmpty()) return;
+                if (content.isEmpty() || !selectable) return;
                 if (selectedIndex == 0) {
                     if (page > 0) {
                         selectedIndex = itemsOnPage - 1;
@@ -60,7 +60,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
 
             @Override
             public void execute() {
-                if(content.isEmpty()) return;
+                if(content.isEmpty() || !selectable) return;
                 if(page == pageCount - 1 && selectedIndex == content.size() % itemsOnPage - 1) return;
                 if (selectedIndex == itemsOnPage - 1) {
                     if (page < pageCount - 1) {
@@ -83,7 +83,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
                 if(content.isEmpty()) return;
                 if (page > 0) {
                     page--;
-                    selectedIndex = 0;
+                    selectedIndex = selectable ? 0 : -1;
                 }
             }
         };
@@ -98,7 +98,7 @@ public class SelectItemPageList<T> implements ConsoleUIComponent {
                 if(content.isEmpty()) return;
                 if (page < pageCount - 1) {
                     page++;
-                    selectedIndex = 0;
+                    selectedIndex = selectable ? 0 : -1;
                 }
             }
         };

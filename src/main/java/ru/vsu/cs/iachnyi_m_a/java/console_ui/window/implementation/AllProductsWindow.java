@@ -40,7 +40,7 @@ public class AllProductsWindow implements Window {
         inputState = InputState.COMMAND;
 
         LabelTitle = new TextLabel("Все товары");
-        SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts(), product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии");
+        SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts(), product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии", true);
 
         commandOpenProductWindow = new Command() {
             @Override

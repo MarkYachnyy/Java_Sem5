@@ -34,7 +34,6 @@ public class CartRepositoryIMDB implements CartRepository {
 
     @Override
     public CartItem save(CartItem entity) {
-        System.err.println("saving cart item " + entity);
         if(findById(entity.getId()).isPresent()) {
             return database.updateCartItem(entity);
         } else {

@@ -30,6 +30,7 @@ public class CartWindow implements Window {
     private Command commandAddSelectedProductToCart;
     private Command commandRemoveSelectedProductFromCart;
     private Command commandOpenAllProductsWindow;
+    private Command commandOpenCheckoutWindow;
 
     private User user;
     private List<CartItem> cartItems;
@@ -43,7 +44,7 @@ public class CartWindow implements Window {
         cartItems = user == null ? null : cartService.getCartOfUser(user.getId());
 
         ListItems = new SelectItemPageList<>(5, cartItems == null ? List.of() : cartItems,
-                item -> productService.getProductById(item.getId().getProductId()).getName() + String.format(" | - %s +", item.getQuantity()));
+                item -> productService.getProductById(item.getId().getProductId()).getName() + String.format(" | - %s +", item.getQuantity()), true);
         LabelHeader = new TextLabel("Корзина");
 
         commandOpenAllProductsWindow = new Command() {
@@ -97,6 +98,20 @@ public class CartWindow implements Window {
                 app.setCurrentWindow(WindowType.CART, params);
             }
         };
+
+        commandOpenCheckoutWindow = new Command() {
+            @Override
+            public String getName() {
+                return "К оформлению заказа";
+            }
+
+            @Override
+            public void execute() {
+                Map<String, Object> params = new HashMap<>();
+                params.put("userId", user.getId());
+                app.setCurrentWindow(WindowType.CHECKOUT, params);
+            }
+        };
     }
 
     @Override
@@ -112,7 +127,7 @@ public class CartWindow implements Window {
         } else {
             return List.of(commandOpenAllProductsWindow, ListItems.getSelectDownCommand(), ListItems.getSelectUpCommand(),
                     ListItems.getSelectPreviousPageCommand(), ListItems.getSelectNextPageCommand(),
-                    commandRemoveSelectedProductFromCart, commandAddSelectedProductToCart);
+                    commandRemoveSelectedProductFromCart, commandAddSelectedProductToCart, commandOpenCheckoutWindow);
         }
     }
 
