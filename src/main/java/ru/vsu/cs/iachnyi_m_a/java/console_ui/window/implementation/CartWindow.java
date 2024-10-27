@@ -2,6 +2,7 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
@@ -129,6 +130,11 @@ public class CartWindow implements Window {
                     ListItems.getSelectPreviousPageCommand(), ListItems.getSelectNextPageCommand(),
                     commandRemoveSelectedProductFromCart, commandAddSelectedProductToCart, commandOpenCheckoutWindow);
         }
+    }
+
+    @Override
+    public List<ConsoleUIComponent> getComponents() {
+        return List.of(LabelHeader, ListItems);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
@@ -188,6 +189,11 @@ public class ProductWindow implements Window {
     @Override
     public List<Command> getCommands() {
         return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow, commandAddToCart, commandRemoveFromCart, commandOpenCartWindow, commandLoginLogout);
+    }
+
+    @Override
+    public List<ConsoleUIComponent> getComponents() {
+        return List.of(TextLabelHeader, TextLabelProductInfo, TextLabelInCart);
     }
 
     @Override

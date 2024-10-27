@@ -2,6 +2,7 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
@@ -109,6 +110,11 @@ public class SellerProfileWindow implements Window {
         return List.of(ListProducts.getSelectDownCommand(), ListProducts.getSelectUpCommand(),
                 ListProducts.getSelectPreviousPageCommand(), ListProducts.getSelectNextPageCommand(),
                 commandOpenProduct, commandOpenCartWindow, commandLoginLogout);
+    }
+
+    @Override
+    public List<ConsoleUIComponent> getComponents() {
+        return List.of(TextLabelHeader, ListProducts);
     }
 
     @Override
