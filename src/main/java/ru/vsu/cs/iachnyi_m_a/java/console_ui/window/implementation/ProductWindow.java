@@ -181,12 +181,6 @@ public class ProductWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return Stream.of(TextLabelHeader, TextLabelProductInfo, TextLabelInCart).map(TextLabel::getDrawableContent)
-                .collect(Collectors.joining('\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n'));
-    }
-
-    @Override
     public List<Command> getCommands() {
         return List.of(commandOpenSellerProfileWindow, commandOpenAllProductsWindow, commandAddToCart, commandRemoveFromCart, commandOpenCartWindow, commandLoginLogout);
     }

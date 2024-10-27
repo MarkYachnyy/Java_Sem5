@@ -95,11 +95,6 @@ public class AllProductsWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return String.join("\n", LabelTitle.getDrawableContent(), "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT), SelectItemPageListProduct.getDrawableContent());
-    }
-
-    @Override
     public List<Command> getCommands() {
 
         return List.of(SelectItemPageListProduct.getSelectUpCommand(), SelectItemPageListProduct.getSelectDownCommand(),

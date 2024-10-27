@@ -3,7 +3,7 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInput;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInputForm;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
@@ -16,22 +16,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LoginWindow implements Window {
 
-    private TextInput TextInputEmail;
-    private TextInput TextInputPassword;
     private TextLabel TextLabelHeader;
+    private TextInputForm TextInputFormLoginData;
     private TextLabel TextLabelStatus;
     private User user;
 
     private InputState inputState;
-    private TextInput currentTextInput;
 
-    private Command commandEnterEmail;
-    private Command commandEnterPassword;
     private Command commandConfirmLogin;
     private Command commandOpenRegisterWindow;
     private Command commandOpenAllProductsWindow;
@@ -42,35 +36,10 @@ public class LoginWindow implements Window {
         inputState = InputState.COMMAND;
         userService = ApplicationContextProvider.getContext().getBean(UserService.class);
 
+        TextInputFormLoginData = new TextInputForm("Почта", "Пароль");
         TextLabelHeader = new TextLabel("Войти в аккаунт");
         TextLabelStatus = new TextLabel("");
-        TextInputEmail = new TextInput("Почта");
-        TextInputPassword = new TextInput("Пароль");
 
-        commandEnterEmail = new Command() {
-            @Override
-            public String getName() {
-                return "Ввести почту";
-            }
-
-            @Override
-            public void execute() {
-                inputState = InputState.VALUE;
-                currentTextInput = TextInputEmail;
-            }
-        };
-        commandEnterPassword = new Command() {
-            @Override
-            public String getName() {
-                return "Ввести пароль";
-            }
-
-            @Override
-            public void execute() {
-                inputState = InputState.VALUE;
-                currentTextInput = TextInputPassword;
-            }
-        };
         commandConfirmLogin = new Command() {
 
             @Override
@@ -80,15 +49,17 @@ public class LoginWindow implements Window {
 
             @Override
             public void execute() {
-                if (TextInputEmail.getValue() == null || TextInputPassword.getValue() == null) {
+                List<String> InputValues = TextInputFormLoginData.getInputValues();
+                String emailValue = InputValues.get(0);
+                String passwordValue = InputValues.get(1);
+                if (emailValue == null || passwordValue == null) {
                     TextLabelStatus.setText("Не все поля заполнены");
                 } else {
-                    User existing = userService.findUserByEmail(TextInputEmail.getValue());
-                    if (existing == null || !existing.getPassword().equals(TextInputPassword.getValue())) {
+                    User existing = userService.findUserByEmail(emailValue);
+                    if (existing == null || !existing.getPassword().equals(passwordValue)) {
                         TextLabelStatus.setText("Неверная почта или пароль");
                     } else {
-                        TextInputEmail.setValue(null);
-                        TextInputPassword.setValue(null);
+                        TextInputFormLoginData.clearInputValues();
                         TextLabelStatus.setText("Успешный вход в аккаунт под именем " + existing.getName());
                         user = existing;
                     }
@@ -123,24 +94,32 @@ public class LoginWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return TextLabelHeader.getDrawableContent() + '\n' +
-                "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                Stream.of(TextInputEmail, TextInputPassword).
-                        map(input -> input == currentTextInput ? "\033[43m" + input.getDrawableContent() + "\033[0m" : input.getDrawableContent()).
-                        collect(Collectors.joining("\n")) + '\n' + "\033[43m" + TextLabelStatus.getDrawableContent() + "\033[0m";
-    }
-
-    @Override
     public List<Command> getCommands() {
-        List<Command> res = new ArrayList<>(List.of(commandEnterEmail, commandEnterPassword, commandConfirmLogin, commandOpenAllProductsWindow));
+        List<Command> res = new ArrayList<>(/*commandConfirmLogin, commandOpenAllProductsWindow*/);
+        for (int i = 0; i < TextInputFormLoginData.getInputCount(); i++) {
+            int thisI = i;
+            res.add(new Command() {
+                @Override
+                public String getName() {
+                    return String.format("Ввести поле %s", TextInputFormLoginData.getInputName(thisI));
+                }
+
+                @Override
+                public void execute() {
+                    TextInputFormLoginData.setInputIndex(thisI);
+                    LoginWindow.this.inputState = InputState.VALUE;
+                }
+            });
+        }
+        res.add(commandConfirmLogin);
+        res.add(commandOpenAllProductsWindow);
         if (user == null) res.add(commandOpenRegisterWindow);
         return res;
     }
 
     @Override
     public List<ConsoleUIComponent> getComponents() {
-        return List.of();
+        return List.of(TextLabelHeader, TextInputFormLoginData, TextLabelStatus);
     }
 
     @Override
@@ -150,10 +129,10 @@ public class LoginWindow implements Window {
 
     @Override
     public void acceptInputValue(String value) {
-        if (currentTextInput != null && !"".equals(value)) {
-            currentTextInput.setValue(value);
+        if (!"".equals(value)) {
+            TextInputFormLoginData.acceptInputValue(value);
         }
         inputState = InputState.COMMAND;
-        currentTextInput = null;
+        TextInputFormLoginData.deselectInput();
     }
 }

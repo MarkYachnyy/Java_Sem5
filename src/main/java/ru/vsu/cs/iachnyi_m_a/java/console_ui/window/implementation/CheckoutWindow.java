@@ -107,14 +107,6 @@ public class CheckoutWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return TextLabelHeader.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                SelectItemPageListCart.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                TextLabelTotalPrice.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                TextLabelDeliveryInfo.getDrawableContent();
-    }
-
-    @Override
     public List<Command> getCommands() {
         return List.of(SelectItemPageListCart.getSelectPreviousPageCommand(), SelectItemPageListCart.getSelectNextPageCommand(),commandOpenCartWindow, commandMakeOrder);
     }

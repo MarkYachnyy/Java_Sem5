@@ -82,13 +82,6 @@ public class OrderWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return TextLabelHeader.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                SelectItemPageListOrderItems.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                TextLabelOrderStatus.getDrawableContent();
-    }
-
-    @Override
     public List<Command> getCommands() {
         return List.of(commandOpenAllProductsWindow, SelectItemPageListOrderItems.getSelectDownCommand(), SelectItemPageListOrderItems.getSelectUpCommand(),
                 SelectItemPageListOrderItems.getSelectPreviousPageCommand(), SelectItemPageListOrderItems.getSelectNextPageCommand(), commandOpenProductPageWindow);

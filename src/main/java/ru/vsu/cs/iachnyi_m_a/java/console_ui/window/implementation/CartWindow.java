@@ -116,12 +116,6 @@ public class CartWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return LabelHeader.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                (cartItems == null || cartItems.isEmpty() ? "Корзина пуста" : ListItems.getDrawableContent());
-    }
-
-    @Override
     public List<Command> getCommands() {
         if(cartItems == null || cartItems.isEmpty()){
             return List.of(commandOpenAllProductsWindow);
@@ -134,7 +128,7 @@ public class CartWindow implements Window {
 
     @Override
     public List<ConsoleUIComponent> getComponents() {
-        return List.of(LabelHeader, ListItems);
+        return List.of(LabelHeader, cartItems.isEmpty() ? new TextLabel("Корзина пуста") : ListItems);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ru.vsu.cs.iachnyi_m_a.java.console_ui;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowFactory;
@@ -11,6 +12,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ConsoleInterfaceApp {
 
@@ -29,24 +31,27 @@ public class ConsoleInterfaceApp {
         this.outputStream = outputStream;
     }
 
-    public void run(){
+    public void run() {
         running = true;
         while (running) {
+
             outputStream.print("\033[H\033[2J");
             outputStream.flush();
-            outputStream.println(currentWindow.getDrawableContent());
+
+            outputStream.println(currentWindow.getComponents().stream().map(ConsoleUIComponent::getDrawableContent).collect(Collectors.joining('\n'+"-".repeat(SEPARATOR_DASH_COUNT) + '\n')));
+
             System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
-            if(currentWindow.getInputState() == InputState.COMMAND){
+            if (currentWindow.getInputState() == InputState.COMMAND) {
                 Map<String, Command> commands = new HashMap<>();
                 for (int i = 0; i < currentWindow.getCommands().size(); i++) {
-                    commands.put(String.valueOf(i+1), currentWindow.getCommands().get(i));
+                    commands.put(String.valueOf(i + 1), currentWindow.getCommands().get(i));
                     System.out.printf("|[%d] %s%n", i + 1, currentWindow.getCommands().get(i).getName());
                 }
                 System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
                 System.out.print("Введите команду: ");
                 String commandKey = scanner.nextLine().strip();
                 Command command = commands.get(commandKey);
-                if(command != null){
+                if (command != null) {
                     command.execute();
                 } else {
                     System.out.println("Выбрана неверная команда");
@@ -58,11 +63,11 @@ public class ConsoleInterfaceApp {
         }
     }
 
-    public void stop(){
+    public void stop() {
         running = false;
     }
 
-    public void setCurrentWindow(WindowType type, Map<String, Object> params){
+    public void setCurrentWindow(WindowType type, Map<String, Object> params) {
         this.currentWindow = windowFactory.createWindow(type, params);
     }
 

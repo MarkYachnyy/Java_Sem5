@@ -100,12 +100,6 @@ public class SellerProfileWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return TextLabelHeader.getDrawableContent() + '\n' + "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) +
-                '\n' + ListProducts.getDrawableContent();
-    }
-
-    @Override
     public List<Command> getCommands() {
         return List.of(ListProducts.getSelectDownCommand(), ListProducts.getSelectUpCommand(),
                 ListProducts.getSelectPreviousPageCommand(), ListProducts.getSelectNextPageCommand(),

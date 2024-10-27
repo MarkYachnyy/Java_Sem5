@@ -80,14 +80,6 @@ public class RegisterWindow implements Window {
     }
 
     @Override
-    public String getDrawableContent() {
-        return TextLabelHeader.getDrawableContent() + '\n' +
-                "-".repeat(ConsoleInterfaceApp.SEPARATOR_DASH_COUNT) + '\n' +
-                TextInputFormUserData.getDrawableContent() + '\n' +
-                TextLabelStatus.getDrawableContent();
-    }
-
-    @Override
     public List<Command> getCommands() {
         List<Command> res = new ArrayList<>();
         for (int i = 0; i < TextInputFormUserData.getInputCount(); i++) {
