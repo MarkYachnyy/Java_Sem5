@@ -8,5 +8,6 @@ public enum WindowType {
     ORDER,
     SELLER_PROFILE,
     LOGIN,
-    CHECKOUT
+    CHECKOUT,
+    ALL_ORDERS
 }

@@ -21,6 +21,7 @@ public class WindowFactory {
         windows.put(WindowType.REGISTER, params -> new RegisterWindow(app, params));
         windows.put(WindowType.LOGIN, params -> new LoginWindow(app, params));
         windows.put(WindowType.CHECKOUT, params -> new CheckoutWindow(app, params));
+        windows.put(WindowType.ALL_ORDERS, params -> new AllOrdersWindow(app, params));
     }
 
     public Window createWindow(WindowType type, Map<String, Object> params) {

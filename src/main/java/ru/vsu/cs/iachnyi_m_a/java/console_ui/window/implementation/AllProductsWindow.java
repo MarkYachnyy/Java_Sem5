@@ -5,7 +5,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class AllProductsWindow implements Window {
 
-    private InputState inputState;
+    private WindowInputState inputState;
     private ProductService productService;
 
     private TextLabel LabelTitle;
@@ -29,6 +29,7 @@ public class AllProductsWindow implements Window {
     private Command commandOpenProductWindow;
     private Command commandLoginLogout;
     private Command commandOpenCartWindow;
+    private Command commandOpenAllOrdersWindow;
 
     private UserService userService;
     private User user;
@@ -38,7 +39,7 @@ public class AllProductsWindow implements Window {
         productService = ApplicationContextProvider.getContext().getBean(ProductService.class);
 
         user = params.get("userId") == null ? null : userService.findUserById((Long) params.get("userId"));
-        inputState = InputState.COMMAND;
+        inputState = WindowInputState.COMMAND;
 
         LabelTitle = new TextLabel("Все товары");
         SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts(), product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии", true);
@@ -92,6 +93,24 @@ public class AllProductsWindow implements Window {
                 }
             }
         };
+
+        commandOpenAllOrdersWindow = new Command() {
+            @Override
+            public String getName() {
+                return "Открыть все заказы";
+            }
+
+            @Override
+            public void execute() {
+                if(user == null) {
+                    commandLoginLogout.execute();
+                } else {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("userId", user.getId());
+                    app.setCurrentWindow(WindowType.ALL_ORDERS, params);
+                }
+            }
+        };
     }
 
     @Override
@@ -99,7 +118,7 @@ public class AllProductsWindow implements Window {
 
         return List.of(SelectItemPageListProduct.getSelectUpCommand(), SelectItemPageListProduct.getSelectDownCommand(),
                 SelectItemPageListProduct.getSelectNextPageCommand(),
-                SelectItemPageListProduct.getSelectPreviousPageCommand(), commandOpenProductWindow, commandOpenCartWindow, commandLoginLogout);
+                SelectItemPageListProduct.getSelectPreviousPageCommand(), commandOpenProductWindow, commandOpenCartWindow, commandOpenAllOrdersWindow, commandLoginLogout);
     }
 
     @Override
@@ -108,13 +127,13 @@ public class AllProductsWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
+    public WindowInputState getInputState() {
         return inputState;
     }
 
     @Override
     public void acceptInputValue(String value) {
-        if (inputState == InputState.COMMAND) {
+        if (inputState == WindowInputState.COMMAND) {
             throw new IllegalStateException("Trying to pass input value while the window is in COMMAND input state");
         }
     }

@@ -5,7 +5,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInputForm;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
@@ -24,7 +24,7 @@ public class LoginWindow implements Window {
     private TextLabel TextLabelStatus;
     private User user;
 
-    private InputState inputState;
+    private WindowInputState inputState;
 
     private Command commandConfirmLogin;
     private Command commandOpenRegisterWindow;
@@ -33,7 +33,7 @@ public class LoginWindow implements Window {
     private UserService userService;
 
     public LoginWindow(ConsoleInterfaceApp app, Map<String, Object> params) {
-        inputState = InputState.COMMAND;
+        inputState = WindowInputState.COMMAND;
         userService = ApplicationContextProvider.getContext().getBean(UserService.class);
 
         TextInputFormLoginData = new TextInputForm("Почта", "Пароль");
@@ -107,7 +107,7 @@ public class LoginWindow implements Window {
                 @Override
                 public void execute() {
                     TextInputFormLoginData.setInputIndex(thisI);
-                    LoginWindow.this.inputState = InputState.VALUE;
+                    LoginWindow.this.inputState = WindowInputState.VALUE;
                 }
             });
         }
@@ -123,7 +123,7 @@ public class LoginWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
+    public WindowInputState getInputState() {
         return inputState;
     }
 
@@ -132,7 +132,7 @@ public class LoginWindow implements Window {
         if (!"".equals(value)) {
             TextInputFormLoginData.acceptInputValue(value);
         }
-        inputState = InputState.COMMAND;
+        inputState = WindowInputState.COMMAND;
         TextInputFormLoginData.deselectInput();
     }
 }

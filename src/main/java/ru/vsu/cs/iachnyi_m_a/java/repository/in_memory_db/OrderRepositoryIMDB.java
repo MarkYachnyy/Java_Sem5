@@ -26,7 +26,7 @@ public class OrderRepositoryIMDB implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
-        return List.of();
+        return database.getAllOrders();
     }
 
     @Override

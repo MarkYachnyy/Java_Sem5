@@ -8,6 +8,6 @@ import java.util.List;
 public interface Window {
     List<Command> getCommands();
     List<ConsoleUIComponent> getComponents();
-    InputState getInputState();
+    WindowInputState getInputState();
     void acceptInputValue(String value);
 }

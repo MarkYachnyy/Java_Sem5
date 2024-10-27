@@ -2,7 +2,7 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui;
 
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowFactory;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
@@ -41,7 +41,7 @@ public class ConsoleInterfaceApp {
             outputStream.println(currentWindow.getComponents().stream().map(ConsoleUIComponent::getDrawableContent).collect(Collectors.joining('\n'+"-".repeat(SEPARATOR_DASH_COUNT) + '\n')));
 
             System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
-            if (currentWindow.getInputState() == InputState.COMMAND) {
+            if (currentWindow.getInputState() == WindowInputState.COMMAND) {
                 Map<String, Command> commands = new HashMap<>();
                 for (int i = 0; i < currentWindow.getCommands().size(); i++) {
                     commands.put(String.valueOf(i + 1), currentWindow.getCommands().get(i));

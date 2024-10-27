@@ -3,10 +3,9 @@ package ru.vsu.cs.iachnyi_m_a.java.console_ui.window.implementation;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInput;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextInputForm;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
@@ -24,7 +23,7 @@ public class RegisterWindow implements Window {
     private Command commandConfirmRegister;
     private Command commandOpenLoginWindow;
 
-    private InputState inputState;
+    private WindowInputState inputState;
 
     private UserService userService;
 
@@ -35,7 +34,7 @@ public class RegisterWindow implements Window {
         TextLabelStatus = new TextLabel("");
         TextInputFormUserData = new TextInputForm("Имя", "Почта", "Пароль", "Подтверждение пароля");
 
-        inputState = InputState.COMMAND;
+        inputState = WindowInputState.COMMAND;
 
         commandConfirmRegister = new Command() {
             @Override
@@ -93,7 +92,7 @@ public class RegisterWindow implements Window {
                 @Override
                 public void execute() {
                     TextInputFormUserData.setInputIndex(thisI);
-                    RegisterWindow.this.inputState = InputState.VALUE;
+                    RegisterWindow.this.inputState = WindowInputState.VALUE;
                 }
             });
         }
@@ -108,7 +107,7 @@ public class RegisterWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
+    public WindowInputState getInputState() {
         return inputState;
     }
 
@@ -117,7 +116,7 @@ public class RegisterWindow implements Window {
         if(!"".equals(value)) {
             TextInputFormUserData.acceptInputValue(value);
         }
-        inputState = InputState.COMMAND;
+        inputState = WindowInputState.COMMAND;
         TextInputFormUserData.deselectInput();
     }
 

@@ -4,7 +4,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.ConsoleInterfaceApp;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
@@ -21,8 +21,6 @@ import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ProductWindow implements Window {
 
@@ -191,8 +189,8 @@ public class ProductWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
-        return InputState.COMMAND;
+    public WindowInputState getInputState() {
+        return WindowInputState.COMMAND;
     }
 
     @Override

@@ -5,7 +5,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
@@ -24,6 +24,7 @@ public class OrderWindow implements Window {
 
     private Command commandOpenAllProductsWindow;
     private Command commandOpenProductPageWindow;
+    private Command commandOpenAllOrdersWindow;
 
     private OrderService orderService;
     private UserService userService;
@@ -79,12 +80,26 @@ public class OrderWindow implements Window {
                 app.setCurrentWindow(WindowType.PRODUCT, params);
             }
         };
+
+        commandOpenAllOrdersWindow = new Command() {
+            @Override
+            public String getName() {
+                return "Назад ко всем заказам";
+            }
+
+            @Override
+            public void execute() {
+                Map<String, Object> params = new HashMap<>();
+                params.put("userId", user.getId());
+                app.setCurrentWindow(WindowType.ALL_ORDERS, params);
+            }
+        };
     }
 
     @Override
     public List<Command> getCommands() {
         return List.of(commandOpenAllProductsWindow, SelectItemPageListOrderItems.getSelectDownCommand(), SelectItemPageListOrderItems.getSelectUpCommand(),
-                SelectItemPageListOrderItems.getSelectPreviousPageCommand(), SelectItemPageListOrderItems.getSelectNextPageCommand(), commandOpenProductPageWindow);
+                SelectItemPageListOrderItems.getSelectPreviousPageCommand(), SelectItemPageListOrderItems.getSelectNextPageCommand(), commandOpenProductPageWindow, commandOpenAllOrdersWindow);
     }
 
     @Override
@@ -93,8 +108,8 @@ public class OrderWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
-        return InputState.COMMAND;
+    public WindowInputState getInputState() {
+        return WindowInputState.COMMAND;
     }
 
     @Override

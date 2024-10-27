@@ -5,7 +5,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.ConsoleUIComponent;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.SelectItemPageList;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component.TextLabel;
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.InputState;
+import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
@@ -132,8 +132,8 @@ public class CartWindow implements Window {
     }
 
     @Override
-    public InputState getInputState() {
-        return InputState.COMMAND;
+    public WindowInputState getInputState() {
+        return WindowInputState.COMMAND;
     }
 
     @Override
