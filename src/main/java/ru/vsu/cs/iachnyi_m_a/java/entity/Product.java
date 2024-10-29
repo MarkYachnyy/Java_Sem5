@@ -8,7 +8,6 @@ import lombok.Data;
 public class Product {
     private long id;
     private long sellerId;
-    private long warehouseId;
     private String name;
     private int price;
     private int stockQuantity;
@@ -16,7 +15,6 @@ public class Product {
     public Product(Product product1) {
         this.id = product1.getId();
         this.sellerId = product1.getSellerId();
-        this.warehouseId = product1.getWarehouseId();
         this.name = product1.getName();
         this.price = product1.getPrice();
         this.stockQuantity = product1.getStockQuantity();

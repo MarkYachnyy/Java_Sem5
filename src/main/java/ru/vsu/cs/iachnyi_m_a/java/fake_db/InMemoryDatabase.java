@@ -1,10 +1,10 @@
 package ru.vsu.cs.iachnyi_m_a.java.fake_db;
 
 import lombok.Getter;
+import ru.vsu.cs.iachnyi_m_a.java.entity.PickupPoint;
 import ru.vsu.cs.iachnyi_m_a.java.entity.Product;
 import ru.vsu.cs.iachnyi_m_a.java.entity.Seller;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
-import ru.vsu.cs.iachnyi_m_a.java.entity.Warehouse;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItem;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItemId;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.Order;
@@ -12,7 +12,6 @@ import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class InMemoryDatabase {
 
@@ -23,11 +22,9 @@ public class InMemoryDatabase {
         this.sellers = new ArrayList<>();
         this.users = new ArrayList<>();
         this.products = new ArrayList<>();
-        this.warehouses = new ArrayList<>();
         this.cartItems = new ArrayList<>();
         this.orderItems = new ArrayList<>();
 
-        Random random = new Random();
         for (int i = 1; i <= 2; i++) {
             insertUser(new User(0, "user" + i, "email" + i + "@gmail.com", "password" + i));
         }
@@ -35,14 +32,14 @@ public class InMemoryDatabase {
         for (int i = 1; i <= 5; i++) {
             insertSeller(new Seller(0, "Продавец" + i));
         }
-        for (int i = 1; i <= 2; i++) {
-            insertWarehouse(new Warehouse(0, "Склад" + i));
-        }
         for (Seller seller : sellers) {
             for (int i = 1; i <= 5; i++) {
-                insertProduct(new Product(0, seller.getId(), warehouses.get(random.nextInt(warehouses.size())).getId(), "Товар" + i + "Продавца" + seller.getId(), i * 100, 5));
+                insertProduct(new Product(0, seller.getId(), "Товар" + i + "Продавца" + seller.getId(), i * 100, 5));
             }
         }
+        insertPickupPoint(new PickupPoint(0, "Куколкина, 10"));
+        insertPickupPoint(new PickupPoint(0, "Ворошилова, 54"));
+        insertPickupPoint(new PickupPoint(0, "Кузьмина, 23"));
     }
 
     private final List<User> users;
@@ -76,7 +73,7 @@ public class InMemoryDatabase {
     private long nextProductId = 1;
 
     public Product insertProduct(Product product) {
-        Product toInsert = new Product(nextProductId, product.getSellerId(), product.getWarehouseId(),
+        Product toInsert = new Product(nextProductId, product.getSellerId(),
                 product.getName(), product.getPrice(), product.getStockQuantity());
         products.add(toInsert);
         nextProductId++;
@@ -87,7 +84,6 @@ public class InMemoryDatabase {
         Product toUpdate = products.stream().filter(product1 -> product1.getId() == product.getId()).findFirst().orElse(null);
         if (toUpdate != null) {
             toUpdate.setSellerId(product.getSellerId());
-            toUpdate.setWarehouseId(product.getWarehouseId());
             toUpdate.setName(product.getName());
             toUpdate.setPrice(product.getPrice());
             toUpdate.setStockQuantity(product.getStockQuantity());
@@ -116,21 +112,12 @@ public class InMemoryDatabase {
         return List.copyOf(sellers);
     }
 
-    private final List<Warehouse> warehouses;
-    private long nextWarehouseId = 1;
-
-    public Warehouse insertWarehouse(Warehouse warehouse) {
-        Warehouse toInsert = new Warehouse(nextWarehouseId, warehouse.getName());
-        warehouses.add(toInsert);
-        nextWarehouseId++;
-        return new Warehouse(toInsert);
-    }
 
     private final List<Order> orders = new ArrayList<>();
     private long nextOrderId = 1;
 
     public Order insertOrder(Order order) {
-        Order toInsert = new Order(nextOrderId, order.getUserId(), order.getDate(), order.getStatus(), order.getItems());
+        Order toInsert = new Order(nextOrderId, order.getUserId(), order.getDate(), order.getPickupPointId(), order.getStatus(), order.getItems());
         orders.add(toInsert);
         nextOrderId++;
         return new Order(toInsert);
@@ -180,6 +167,20 @@ public class InMemoryDatabase {
 
     public void deleteCartItem(CartItemId id) {
         cartItems.removeIf(ci -> ci.getId().equals(id));
+    }
+
+    private final List<PickupPoint> pickupPoints = new ArrayList<>();
+
+    private long nextPickupPointId = 1;
+
+    public PickupPoint insertPickupPoint(PickupPoint pickupPoint) {
+        PickupPoint toInsert = new PickupPoint(nextPickupPointId, pickupPoint.getAddress());
+        pickupPoints.add(toInsert);
+        return new PickupPoint(toInsert.getId(), toInsert.getAddress());
+    }
+
+    public List<PickupPoint> getAllPickupPoints(){
+        return List.copyOf(pickupPoints);
     }
 
 }

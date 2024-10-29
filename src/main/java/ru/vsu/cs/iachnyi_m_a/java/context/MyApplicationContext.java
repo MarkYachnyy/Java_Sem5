@@ -19,12 +19,14 @@ public class MyApplicationContext implements ApplicationContext{
         beans.add(new ProductRepositoryIMDB(InMemoryDatabase.getInstance()));
         beans.add(new UserRepositoryIMDB(InMemoryDatabase.getInstance()));
         beans.add(new SellerRepositoryIMDB(InMemoryDatabase.getInstance()));
+        beans.add(new PickupPointRepositoryIMDB(InMemoryDatabase.getInstance()));
 
         beans.add(new OrderService(this.getBean(OrderRepository.class), this.getBean(OrderItemRepository.class)));
         beans.add(new UserService(this.getBean(UserRepository.class)));
         beans.add(new ProductService(this.getBean(ProductRepository.class)));
         beans.add(new SellerService(this.getBean(SellerRepository.class)));
         beans.add(new CartService(this.getBean(CartRepository.class)));
+        beans.add(new PickupPointService(this.getBean(PickupPointRepository.class)));
     }
 
     public <T> T getBean(Class<T> clazz){

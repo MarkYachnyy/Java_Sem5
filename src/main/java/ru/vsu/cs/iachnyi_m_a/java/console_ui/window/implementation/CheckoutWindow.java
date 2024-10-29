@@ -9,6 +9,7 @@ import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowInputState;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.Window;
 import ru.vsu.cs.iachnyi_m_a.java.console_ui.window.WindowType;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
+import ru.vsu.cs.iachnyi_m_a.java.entity.PickupPoint;
 import ru.vsu.cs.iachnyi_m_a.java.entity.Product;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItem;
@@ -16,15 +17,9 @@ import ru.vsu.cs.iachnyi_m_a.java.entity.order.Order;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItem;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItemId;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderStatus;
-import ru.vsu.cs.iachnyi_m_a.java.service.CartService;
-import ru.vsu.cs.iachnyi_m_a.java.service.OrderService;
-import ru.vsu.cs.iachnyi_m_a.java.service.ProductService;
-import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
+import ru.vsu.cs.iachnyi_m_a.java.service.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CheckoutWindow implements Window {
 
@@ -32,6 +27,7 @@ public class CheckoutWindow implements Window {
     private CartService cartService;
     private ProductService productService;
     private OrderService orderService;
+    private PickupPointService pickupPointService;
 
     private User user;
     private List<CartItem> cart;
@@ -39,16 +35,22 @@ public class CheckoutWindow implements Window {
     private TextLabel TextLabelHeader;
     private SelectItemPageList<CartItem> SelectItemPageListCart;
     private TextLabel TextLabelTotalPrice;
-    private TextLabel TextLabelDeliveryInfo;
+
+    private TextLabel TextLabelPickupPointInfo;
+    private SelectItemPageList<PickupPoint> SelectItemPageListPickupPoints;
+    private boolean choosingPickupPoint = false;
 
     private Command commandOpenCartWindow;
     private Command commandMakeOrder;
+    private Command commandOpenPickupPointList;
+    private Command commandSelectPickupPoint;
 
     public CheckoutWindow(ConsoleInterfaceApp app, Map<String, Object> params) {
         userService = ApplicationContextProvider.getContext().getBean(UserService.class);
         cartService = ApplicationContextProvider.getContext().getBean(CartService.class);
         productService = ApplicationContextProvider.getContext().getBean(ProductService.class);
         orderService = ApplicationContextProvider.getContext().getBean(OrderService.class);
+        pickupPointService = ApplicationContextProvider.getContext().getBean(PickupPointService.class);
 
         user = params.get("userId") == null ? null : userService.findUserById((Long) params.get("userId"));
         if (user != null) {
@@ -62,7 +64,9 @@ public class CheckoutWindow implements Window {
         }, false);
         TextLabelTotalPrice = new TextLabel(String.format("Итого: %s₽", cart.stream().
                 mapToInt(ci -> ci.getQuantity() * productService.getProductById(ci.getId().getProductId()).getPrice()).reduce(Integer::sum).orElse(0)));
-        TextLabelDeliveryInfo = new TextLabel("Доставка в пункт выдачи Карла Маркса, 67\nсо склада Подольский: 2-3 дней");
+
+        SelectItemPageListPickupPoints = new SelectItemPageList<>(3, pickupPointService.getAllPickupPoints(), pp -> String.format("Пункт выдачи на %s", pp.getAddress()), true);
+        TextLabelPickupPointInfo = new TextLabel(String.format("Пункт выдачи на %s", SelectItemPageListPickupPoints.getSelectedItem().getAddress()));
 
         commandOpenCartWindow = new Command() {
             @Override
@@ -86,7 +90,7 @@ public class CheckoutWindow implements Window {
 
             @Override
             public void execute() {
-                Order toInsert = new Order(0, user.getId(), new Date(), OrderStatus.ASSEMBLY, null);
+                Order toInsert = new Order(0, user.getId(), new Date(), SelectItemPageListPickupPoints.getSelectedItem().getId(), OrderStatus.ASSEMBLY, null);
                 toInsert.setItems(cart.stream().map(ci -> new OrderItem(new OrderItemId(0, ci.getId().getProductId()),
                         ci.getQuantity(), productService.getProductById(ci.getId().getProductId()).getPrice())).toList());
                 Order res = orderService.addOrder(toInsert);
@@ -104,11 +108,45 @@ public class CheckoutWindow implements Window {
                 app.setCurrentWindow(WindowType.ORDER, params);
             }
         };
+
+        commandOpenPickupPointList = new Command() {
+            @Override
+            public String getName() {
+                return "Изменить пункт выдачи";
+            }
+
+            @Override
+            public void execute() {
+                choosingPickupPoint = true;
+            }
+        };
+
+        commandSelectPickupPoint = new Command() {
+            @Override
+            public String getName() {
+                return "Выбрать пункт выдачи";
+            }
+
+            @Override
+            public void execute() {
+                choosingPickupPoint = false;
+                TextLabelPickupPointInfo = new TextLabel(String.format("Пункт выдачи на %s", SelectItemPageListPickupPoints.getSelectedItem().getAddress()));
+            }
+        };
     }
 
     @Override
     public List<Command> getCommands() {
-        return List.of(SelectItemPageListCart.getSelectPreviousPageCommand(), SelectItemPageListCart.getSelectNextPageCommand(),commandOpenCartWindow, commandMakeOrder);
+        List<Command> res = new ArrayList<>(List.of(SelectItemPageListCart.getSelectPreviousPageCommand(), SelectItemPageListCart.getSelectNextPageCommand(), commandOpenCartWindow));
+        if(choosingPickupPoint) {
+            res.addAll(List.of(SelectItemPageListPickupPoints.getSelectUpCommand(), SelectItemPageListPickupPoints.getSelectDownCommand(),
+                    SelectItemPageListPickupPoints.getSelectPreviousPageCommand(), SelectItemPageListPickupPoints.getSelectNextPageCommand(),
+                    commandSelectPickupPoint));
+        } else {
+            res.add(commandOpenPickupPointList);
+            res.add(commandMakeOrder);
+        }
+        return res;
     }
 
     @Override
@@ -118,7 +156,7 @@ public class CheckoutWindow implements Window {
 
     @Override
     public List<ConsoleUIComponent> getComponents() {
-        return List.of(TextLabelHeader, SelectItemPageListCart, TextLabelTotalPrice, TextLabelDeliveryInfo);
+        return List.of(TextLabelHeader, SelectItemPageListCart, TextLabelTotalPrice, choosingPickupPoint ? SelectItemPageListPickupPoints : TextLabelPickupPointInfo);
     }
 
     @Override

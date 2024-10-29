@@ -11,16 +11,18 @@ public class PickupPointRepositoryIMDB implements PickupPointRepository {
 
     InMemoryDatabase database = InMemoryDatabase.getInstance();
 
-
+    public PickupPointRepositoryIMDB(InMemoryDatabase database) {
+        this.database = database;
+    }
 
     @Override
     public Optional<PickupPoint> findById(Long id) {
-        return Optional.empty();
+        return database.getAllPickupPoints().stream().filter(p -> p.getId() == id).findFirst();
     }
 
     @Override
     public List<PickupPoint> findAll() {
-        return List.of();
+        return database.getAllPickupPoints();
     }
 
     @Override
