@@ -1,9 +1,7 @@
 package ru.vsu.cs.iachnyi_m_a.java.repository.in_memory_db;
 
-import lombok.Getter;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItem;
 import ru.vsu.cs.iachnyi_m_a.java.entity.cart.CartItemId;
-import ru.vsu.cs.iachnyi_m_a.java.fake_db.InMemoryDatabase;
 import ru.vsu.cs.iachnyi_m_a.java.repository.CartRepository;
 
 import java.util.List;

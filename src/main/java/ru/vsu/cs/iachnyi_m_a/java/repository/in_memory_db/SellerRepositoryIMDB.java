@@ -1,7 +1,6 @@
 package ru.vsu.cs.iachnyi_m_a.java.repository.in_memory_db;
 
 import ru.vsu.cs.iachnyi_m_a.java.entity.Seller;
-import ru.vsu.cs.iachnyi_m_a.java.fake_db.InMemoryDatabase;
 import ru.vsu.cs.iachnyi_m_a.java.repository.SellerRepository;
 
 import java.util.List;

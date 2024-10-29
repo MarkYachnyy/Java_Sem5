@@ -2,7 +2,6 @@ package ru.vsu.cs.iachnyi_m_a.java.repository.in_memory_db;
 
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItem;
 import ru.vsu.cs.iachnyi_m_a.java.entity.order.OrderItemId;
-import ru.vsu.cs.iachnyi_m_a.java.fake_db.InMemoryDatabase;
 import ru.vsu.cs.iachnyi_m_a.java.repository.OrderItemRepository;
 
 import java.util.List;
