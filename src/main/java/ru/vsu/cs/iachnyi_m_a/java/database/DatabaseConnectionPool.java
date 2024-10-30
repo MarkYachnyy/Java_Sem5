@@ -50,4 +50,9 @@ public class DatabaseConnectionPool {
         usedConns.add(newConn);
         return newConn;
     }
+
+    public synchronized void release(Connection con) {
+        usedConns.remove(con);
+        availableConns.add(con);
+    }
 }

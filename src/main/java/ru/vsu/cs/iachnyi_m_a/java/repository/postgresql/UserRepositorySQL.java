@@ -22,8 +22,8 @@ public class UserRepositorySQL implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
+        Connection connection = pool.retrieve();
         try {
-            Connection connection = pool.retrieve();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
@@ -34,14 +34,16 @@ public class UserRepositorySQL implements UserRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace(System.err);
+        } finally {
+            pool.release(connection);
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<User> findById(Long id) {
+        Connection connection = pool.retrieve();
         try {
-            Connection connection = pool.retrieve();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -52,6 +54,8 @@ public class UserRepositorySQL implements UserRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace(System.err);
+        } finally {
+            pool.release(connection);
         }
         return Optional.empty();
     }
@@ -59,8 +63,8 @@ public class UserRepositorySQL implements UserRepository {
     @Override
     public List<User> findAll() {
         List<User> res = new ArrayList<>();
+        Connection connection = pool.retrieve();
         try {
-            Connection connection = pool.retrieve();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -68,6 +72,8 @@ public class UserRepositorySQL implements UserRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace(System.err);
+        } finally {
+            pool.release(connection);
         }
         return res;
     }
@@ -75,6 +81,32 @@ public class UserRepositorySQL implements UserRepository {
     @Override
     public User save(User entity) {
         User res = null;
+        Connection connection = pool.retrieve();
+        try{
+            User existing = findById(entity.getId()).orElse(null);
+            PreparedStatement statement;
+            if(existing != null){
+                statement = connection.prepareStatement("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?");
+                statement.setString(1, entity.getName());
+                statement.setString(2, entity.getEmail());
+                statement.setString(3, entity.getPassword());
+                statement.setLong(4, entity.getId());
+            } else {
+                statement = connection.prepareStatement("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+                statement.setString(1, entity.getName());
+                statement.setString(2, entity.getEmail());
+                statement.setString(3, entity.getPassword());
+            }
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                res = new User(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace(System.err);
+        } finally {
+            pool.release(connection);
+        }
+
         return res;
     }
 
