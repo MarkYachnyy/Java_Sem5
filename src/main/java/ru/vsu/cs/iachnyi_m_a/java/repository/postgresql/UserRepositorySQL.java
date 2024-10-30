@@ -4,10 +4,7 @@ import ru.vsu.cs.iachnyi_m_a.java.database.DatabaseConnectionPool;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.repository.UserRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -86,21 +83,21 @@ public class UserRepositorySQL implements UserRepository {
             User existing = findById(entity.getId()).orElse(null);
             PreparedStatement statement;
             if(existing != null){
-                statement = connection.prepareStatement("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?");
+                statement = connection.prepareStatement("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, entity.getName());
                 statement.setString(2, entity.getEmail());
                 statement.setString(3, entity.getPassword());
                 statement.setLong(4, entity.getId());
             } else {
-                statement = connection.prepareStatement("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+                statement = connection.prepareStatement("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, entity.getName());
                 statement.setString(2, entity.getEmail());
                 statement.setString(3, entity.getPassword());
             }
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                res = new User(resultSet.getLong("id"), resultSet.getString("name"), resultSet.getString("email"), resultSet.getString("password"));
-            }
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            return findById(resultSet.getLong(1)).orElse(null);
         } catch (SQLException e){
             e.printStackTrace(System.err);
         } finally {
