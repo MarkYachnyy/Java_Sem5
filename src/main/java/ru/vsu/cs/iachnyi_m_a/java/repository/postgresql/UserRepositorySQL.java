@@ -104,7 +104,7 @@ public class UserRepositorySQL implements UserRepository {
             pool.release(connection);
         }
 
-        return res;
+        return null;
     }
 
     @Override

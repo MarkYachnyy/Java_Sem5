@@ -91,7 +91,7 @@ public class CartWindow implements Window {
                 if(item.getQuantity() > 1){
                     item.setQuantity(item.getQuantity() - 1);
                     cartService.saveCartItem(item);
-                } else if(item.getQuantity() == 1){
+                } else {
                     cartService.deleteCartItem(item.getId());
                 }
                 Map<String, Object> params = new HashMap<>();
