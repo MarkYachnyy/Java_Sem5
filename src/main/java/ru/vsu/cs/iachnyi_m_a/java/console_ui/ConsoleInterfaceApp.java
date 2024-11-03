@@ -38,7 +38,11 @@ public class ConsoleInterfaceApp {
             outputStream.print("\033[H\033[2J");
             outputStream.flush();
 
-            outputStream.println(currentWindow.getComponents().stream().map(ConsoleUIComponent::getDrawableContent).collect(Collectors.joining('\n'+"-".repeat(SEPARATOR_DASH_COUNT) + '\n')));
+            try {
+                outputStream.println(currentWindow.getComponents().stream().map(ConsoleUIComponent::getDrawableContent).collect(Collectors.joining('\n'+"-".repeat(SEPARATOR_DASH_COUNT) + '\n')));
+            } catch (Exception e) {
+                System.err.println("WINDOW: " + currentWindow.getClass().getName());
+            }
 
             System.out.println("-".repeat(SEPARATOR_DASH_COUNT));
             if (currentWindow.getInputState() == WindowInputState.COMMAND) {

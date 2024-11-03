@@ -16,8 +16,9 @@ public class MyApplicationContext implements ApplicationContext{
         beans = new ArrayList<>();
 
         beans.add(new DatabaseConnectionPool("jdbc:postgresql://localhost:5432/java_task", "postgres", "1234", "org.postgresql.Driver", 1));
-        beans.add(new OrderRepositoryIMDB(InMemoryDatabase.getInstance()));
-        beans.add(new OrderItemRepositoryIMDB(InMemoryDatabase.getInstance()));
+
+        beans.add(new OrderRepositorySQL(getBean(DatabaseConnectionPool.class)));
+        beans.add(new OrderItemRepositorySQL(getBean(DatabaseConnectionPool.class)));
         beans.add(new CartRepositorySQL(getBean(DatabaseConnectionPool.class)));
         beans.add(new ProductRepositorySQL(getBean(DatabaseConnectionPool.class)));
         beans.add(new UserRepositorySQL(getBean(DatabaseConnectionPool.class)));

@@ -77,7 +77,6 @@ public class UserRepositorySQL implements UserRepository {
 
     @Override
     public User save(User entity) {
-        User res = null;
         Connection connection = pool.retrieve();
         try{
             User existing = findById(entity.getId()).orElse(null);
