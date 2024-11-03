@@ -17,6 +17,7 @@ import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AllProductsWindow implements Window {
 
@@ -42,7 +43,8 @@ public class AllProductsWindow implements Window {
         inputState = WindowInputState.COMMAND;
 
         LabelTitle = new TextLabel("Все товары");
-        SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts(), product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии", true);
+        SelectItemPageListProduct = new SelectItemPageList<>(5, productService.getAllProducts().stream().filter(product -> product.getStockQuantity() > 0).collect(Collectors.toList()),
+                product -> product.getName() + ": " + product.getPrice() + " | " + product.getStockQuantity() + " шт. в наличии", true);
 
         commandOpenProductWindow = new Command() {
             @Override
