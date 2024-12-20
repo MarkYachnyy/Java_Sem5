@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class OrderItemRepositorySQL implements OrderItemRepository {
 
-    DatabaseConnectionPool pool;
+    private DatabaseConnectionPool pool;
 
     public OrderItemRepositorySQL(DatabaseConnectionPool pool) {
         this.pool = pool;

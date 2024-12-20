@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CartItem {
-    CartItemId id;
-    int quantity;
+    private CartItemId id;
+    private int quantity;
 
     public CartItem(CartItem cartItem1) {
         id = new CartItemId(cartItem1.getId());
