@@ -1,7 +1,5 @@
 package ru.vsu.cs.iachnyi_m_a.java.console_ui.ui_component;
 
-import ru.vsu.cs.iachnyi_m_a.java.console_ui.command.Command;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

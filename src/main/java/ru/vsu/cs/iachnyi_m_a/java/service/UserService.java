@@ -1,9 +1,8 @@
 package ru.vsu.cs.iachnyi_m_a.java.service;
 
-import lombok.Getter;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.repository.UserRepository;
-import ru.vsu.cs.iachnyi_m_a.java.repository.in_memory_db.UserRepositoryIMDB;
+import ru.vsu.cs.iachnyi_m_a.java.security.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -28,12 +27,14 @@ public class UserService {
         if (userOptional.isPresent()) {
             return false;
         } else {
+            user.setPassword(PasswordEncoder.encode(user.getPassword()));
             repository.save(user);
             return true;
         }
     }
 
     public User updateUser(User user) {
+        user.setPassword(PasswordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
 }
