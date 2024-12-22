@@ -35,7 +35,7 @@ function deleteCookie(name) {
     })
 }
 
-function redirectIfValidCredentials(link){
+function redirectIfValidCredentials(link, elseDo){
     $.ajax({
         url:'api/check-credentials',
         method:'get',
@@ -47,12 +47,14 @@ function redirectIfValidCredentials(link){
         success : response => {
             if('1' === response){
                 window.location.href = link;
+            } else {
+                elseDo();
             }
         }
     });
 }
 
-function redirectIfBadCredentials(link){
+function redirectIfBadCredentials(link, elseDo){
     $.ajax({
         url:'api/check-credentials',
         method:'get',
@@ -64,6 +66,8 @@ function redirectIfBadCredentials(link){
         success : response => {
             if('0' === response){
                 window.location.href = link;
+            } else {
+                elseDo();
             }
         }
     });

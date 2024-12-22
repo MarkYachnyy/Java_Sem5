@@ -7,7 +7,7 @@ TextServerResponse = $('.text__server__respose')[0];
 let ValuesAreValid = true;
 let EMAIL_RE = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-redirectIfValidCredentials('all-products');
+redirectIfValidCredentials('all-products', null);
 
 ButtonConfirm.addEventListener('click', () => {
     $('.text__server__respose').show();

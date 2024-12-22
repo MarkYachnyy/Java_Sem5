@@ -1,4 +1,4 @@
-package ru.vsu.cs.iachnyi_m_a.java.servlets.api_servlets;
+package ru.vsu.cs.iachnyi_m_a.java.servlets.api_servlets.product;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletConfig;
@@ -8,36 +8,43 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
+import ru.vsu.cs.iachnyi_m_a.java.entity.Product;
 import ru.vsu.cs.iachnyi_m_a.java.service.ProductService;
-import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/api/products/*")
+@WebServlet("/api/product")
 public class ProductServlet extends HttpServlet {
-    private UserService userService;
     private ProductService productService;
     private Gson gson;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userService = ApplicationContextProvider.getContext().getBean(UserService.class);
         productService = ApplicationContextProvider.getContext().getBean(ProductService.class);
         gson = new Gson();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if(pathInfo.trim().equals("/all")){
-            processAllProductsRequest(req, resp);
+        String id_str = req.getParameter("id");
+        if(id_str==null){
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else {
+            try {
+                long id = Long.parseLong(id_str);
+                Product product = productService.getProductById(id);
+                if(product==null){
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } else {
+                    resp.setContentType("application/json");
+                    resp.setCharacterEncoding("UTF-8");
+                    resp.getWriter().print(gson.toJson(product));
+                    resp.getWriter().flush();
+                }
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
         }
-    }
-
-    private void processAllProductsRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        resp.getWriter().println(gson.toJson(productService.getAllProducts()));
-        resp.getWriter().flush();
     }
 }

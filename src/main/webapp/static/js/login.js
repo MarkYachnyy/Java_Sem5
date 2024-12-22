@@ -3,7 +3,7 @@ InputPassword = $('.input__password')[0];
 ButtonConfirm = $('.button__register')[0];
 TextServerResponse = $('.text__server__respose')[0];
 
-redirectIfValidCredentials('/all-products');
+redirectIfValidCredentials('/all-products', null);
 
 ButtonConfirm.addEventListener('click', () => {
     $('.text__server__respose').show();
