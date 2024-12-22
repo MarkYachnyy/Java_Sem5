@@ -8,6 +8,10 @@ public class PasswordEncoder {
         return getEncryptedPassword(password);
     }
 
+    public static boolean matches(String password, String encodedPassword) {
+        return getEncryptedPassword(password).equals(encodedPassword);
+    }
+
     private static String getEncryptedPassword(String passwordToHash) {
         String generatedPassword = null;
         try {

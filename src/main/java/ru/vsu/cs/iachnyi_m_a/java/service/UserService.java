@@ -33,6 +33,24 @@ public class UserService {
         }
     }
 
+    public boolean checkCredentialsNotEncoded(String email, String password) {
+        Optional<User> userOptional = repository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            return PasswordEncoder.matches(password, userOptional.get().getPassword());
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkCredentialsEncoded(String email, String password) {
+        Optional<User> userOptional = repository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getPassword().equals(password);
+        } else {
+            return false;
+        }
+    }
+
     public User updateUser(User user) {
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         return repository.save(user);

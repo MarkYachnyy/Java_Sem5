@@ -7,6 +7,8 @@ TextServerResponse = $('.text__server__respose')[0];
 let ValuesAreValid = true;
 let EMAIL_RE = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
+redirectIfValidCredentials('all-products');
+
 ButtonConfirm.addEventListener('click', () => {
     $('.text__server__respose').show();
     validateValues();
@@ -24,7 +26,7 @@ function sendRegisterAjax(){
     $.ajax({
         url:'api/register-user',
         method:'post',
-        data: JSON.stringify({name: InputUsername.value, password: InputPassword.value}),
+        data: JSON.stringify({name: InputUsername.value, email: InputEmail.value, password: InputPassword.value}),
         contentType : 'application/json',
         success : ProcessServerResponse
     });
@@ -51,7 +53,6 @@ function validateValues() {
 }
 
 function ProcessServerResponse(response){
-    console.log(response);
     if(response.success == null){
         TextServerResponse.innerText = response.error;
         TextServerResponse.style.color = "red";
@@ -60,6 +61,7 @@ function ProcessServerResponse(response){
         TextServerResponse.style.color = "green";
         InputUsername.value = "";
         InputPassword.value = "";
+        InputEmail.value = "";
         InputPasswordConfirm.value = "";
     }
 }

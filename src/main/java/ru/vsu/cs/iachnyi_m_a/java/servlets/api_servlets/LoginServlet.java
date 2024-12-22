@@ -7,7 +7,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContext;
 import ru.vsu.cs.iachnyi_m_a.java.context.ApplicationContextProvider;
 import ru.vsu.cs.iachnyi_m_a.java.entity.User;
 import ru.vsu.cs.iachnyi_m_a.java.service.UserService;
@@ -15,11 +14,9 @@ import ru.vsu.cs.iachnyi_m_a.java.servlets.ServletUtils;
 import ru.vsu.cs.iachnyi_m_a.java.servlets.response_entity.SimpleSuccessOrErrorResponse;
 
 import java.io.IOException;
-import java.util.HashMap;
 
-@WebServlet(urlPatterns = "/api/register-user")
-public class RegisterUserServlet extends HttpServlet {
-
+@WebServlet(urlPatterns = "/api/login")
+public class LoginServlet extends HttpServlet {
     private UserService userService;
     private Gson gson;
 
@@ -31,21 +28,19 @@ public class RegisterUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try{
-            User user = ServletUtils.parseJson(req, User.class);
-            SimpleSuccessOrErrorResponse response = new SimpleSuccessOrErrorResponse();
-            System.out.println(userService);
-            if(userService.registerUser(user)){
-                response.setSuccess("Пользователь успешно зарегистрирован");
-            } else {
-                response.setError("Пользователь не зарегистрирован");
-            }
-            resp.setContentType("text/json");
-            resp.getWriter().println(gson.toJson(response));
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        User user = ServletUtils.parseJson(req, User.class);
+        resp.setContentType("application/json");
+        if(userService.checkCredentialsNotEncoded(user.getEmail(), user.getPassword())){
+            User res = new User(0, null, user.getEmail(), userService.findUserByEmail(user.getEmail()).getPassword());
+            resp.getWriter().println(gson.toJson(res));
             resp.getWriter().flush();
-        } catch (Exception e){
-            e.printStackTrace();
+        } else {
+            SimpleSuccessOrErrorResponse res = new SimpleSuccessOrErrorResponse();
+            res.setError("Неверный логин или пароль");
+            resp.getWriter().println(gson.toJson(res));
+            resp.getWriter().flush();
         }
+
     }
 }
