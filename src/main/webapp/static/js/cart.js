@@ -1,6 +1,13 @@
 DivContent = $(".content")[0];
+SpanTotalQuantity = $(".span__total__quantity")[0];
+SpanTotalPrice = $(".span__total__price")[0];
+ButtonProceedToCheckout = $(".button__proceed__to__checkout")[0];
+
+TotalPrice = 0;
+TotalQuantity = 0;
 
 redirectIfBadCredentials("/login", loadCartData);
+
 function loadCartData(){
 
     $.ajax({
@@ -18,9 +25,13 @@ function loadCartData(){
 }
 
 function setCartListHtml(item_list){
+    TotalPrice = 0;
+    TotalQuantity = 0;
     DivContent.innerHTML="";
     for(let item of item_list){
         DivContent.innerHTML += makeCartItemHTML(item);
+        TotalQuantity += item.quantity;
+        TotalPrice += item.quantity * item.price;
     }
     for(let item of item_list){
         $(`#button-minus-one-${item.productId}`)[0].addEventListener("click", () => {
@@ -50,6 +61,14 @@ function setCartListHtml(item_list){
             });
         });
     }
+    SpanTotalQuantity.innerText = "" + TotalQuantity;
+    SpanTotalPrice.innerText = "" + TotalPrice;
+
+    if(TotalQuantity === 0){
+        ButtonProceedToCheckout.style.display = 'none';
+    } else {
+        ButtonProceedToCheckout.style.display = 'inline';
+    }
 }
 
 function makeCartItemHTML(item){
@@ -60,6 +79,7 @@ function makeCartItemHTML(item){
             <button class="button__minus__one" id="button-minus-one-${item.productId}">-</button>
             <p class="p__cart__item__quantity">${item.quantity}</p>
             <button class="button__plus__one" id="button-plus-one-${item.productId}">+</button> 
+            <p class="p__cart__item__price"> x ${item.price} шт.</p>
         </div>`;
     return html;
 }

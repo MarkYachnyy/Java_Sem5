@@ -9,4 +9,5 @@ public class CartItemResponseEntity {
     private long productId;
     private String productName;
     private int quantity;
+    private int price;
 }

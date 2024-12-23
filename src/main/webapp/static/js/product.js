@@ -6,6 +6,47 @@ ButtonMinus = $(".button__minus__one")[0];
 ButtonAddToCart = $(".button__add__to__cart")[0];
 
 params = new URLSearchParams(window.location.search);
+
+ButtonPlus.addEventListener("click", () => {
+    $.ajax({
+        url:`/api/cart/add?productId=${params.get("id")}`,
+        method:'post',
+        headers:{
+            "email":getCookie("email"),
+            "password_hash": getCookie("password_hash")
+        },
+        success : () => {
+            getInCartInfo();
+        }
+    });
+});
+ButtonMinus.addEventListener("click", () => {
+    $.ajax({
+        url:`/api/cart/remove?productId=${params.get("id")}`,
+        method:'post',
+        headers:{
+            "email":getCookie("email"),
+            "password_hash": getCookie("password_hash")
+        },
+        success : () => {
+            getInCartInfo();
+        }
+    });
+});
+ButtonAddToCart.addEventListener("click", () => {
+    $.ajax({
+        url:`/api/cart/add?productId=${params.get("id")}`,
+        method:'post',
+        headers:{
+            "email":getCookie("email"),
+            "password_hash": getCookie("password_hash")
+        },
+        success : () => {
+            getInCartInfo();
+        }
+    });
+});
+
 function getProductInfoAjax(){
     $.ajax({
         url:`api/product?id=${params.get("id")}`,
@@ -58,49 +99,11 @@ function processCartInfo(response){
         ButtonAddToCart.style.display = 'none';
         PInCartInfo.style.display = 'inline'
         PInCartInfo.innerText = "В корзине: " + quantity;
-        ButtonPlus.addEventListener("click", () => {
-            $.ajax({
-                url:`/api/cart/add?productId=${params.get("id")}`,
-                method:'post',
-                headers:{
-                    "email":getCookie("email"),
-                    "password_hash": getCookie("password_hash")
-                },
-                success : () => {
-                    getInCartInfo();
-                }
-            });
-        });
-        ButtonMinus.addEventListener("click", () => {
-            $.ajax({
-                url:`/api/cart/remove?productId=${params.get("id")}`,
-                method:'post',
-                headers:{
-                    "email":getCookie("email"),
-                    "password_hash": getCookie("password_hash")
-                },
-                success : () => {
-                    getInCartInfo();
-                }
-            });
-        });
     } else {
         ButtonPlus.style.display = 'none';
         ButtonMinus.style.display = 'none';
         ButtonAddToCart.style.display = 'inline';
-        ButtonAddToCart.addEventListener("click", () => {
-            $.ajax({
-                url:`/api/cart/add?productId=${params.get("id")}`,
-                method:'post',
-                headers:{
-                    "email":getCookie("email"),
-                    "password_hash": getCookie("password_hash")
-                },
-                success : () => {
-                    getInCartInfo();
-                }
-            });
-        });
+        PInCartInfo.style.display = 'none';
     }
 }
 

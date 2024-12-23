@@ -14,7 +14,7 @@
 .navigation__bar{
     display: flex;
 }
-.button__plus__one, .button__minus__one{
+.button__plus__one, .button__minus__one, .button__proceed__to__checkout{
     padding: 10px;
     margin: 5px;
     background: blue;

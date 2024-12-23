@@ -42,7 +42,8 @@ public class UserCartServlet extends HttpServlet {
         } else {
             List<CartItem> items = cartService.getCartOfUser(userService.findUserByEmail(req.getHeader("email")).getId());
             List<CartItemResponseEntity> res = items.stream().map(i -> new CartItemResponseEntity(i.getId().getProductId(),
-                    productService.getProductById(i.getId().getProductId()).getName(), i.getQuantity())).toList();
+                    productService.getProductById(i.getId().getProductId()).getName(), i.getQuantity(),
+                    productService.getProductById(i.getId().getProductId()).getPrice())).toList();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().print(gson.toJson(res));
