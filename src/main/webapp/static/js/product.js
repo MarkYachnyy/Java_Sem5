@@ -6,7 +6,6 @@ ButtonMinus = $(".button__minus__one")[0];
 ButtonAddToCart = $(".button__add__to__cart")[0];
 
 params = new URLSearchParams(window.location.search);
-
 function getProductInfoAjax(){
     $.ajax({
         url:`api/product?id=${params.get("id")}`,
@@ -37,6 +36,10 @@ function getInCartInfo() {
         $.ajax({
             url:`api/cart/quantity?productId=${params.get("id")}`,
             method:'get',
+            headers:{
+                "email":getCookie("email"),
+                "password_hash": getCookie("password_hash")
+            },
             contentType : 'text/plain',
             success : response => processCartInfo(response)
         });
@@ -54,7 +57,7 @@ function processCartInfo(response){
         ButtonMinus.style.display = 'inline';
         ButtonAddToCart.style.display = 'none';
         PInCartInfo.style.display = 'inline'
-        PInCartInfo.style.innerText = "В корзине: " + quantity;
+        PInCartInfo.innerText = "В корзине: " + quantity;
         ButtonPlus.addEventListener("click", () => {
             $.ajax({
                 url:`/api/cart/add?productId=${params.get("id")}`,
@@ -85,7 +88,7 @@ function processCartInfo(response){
         ButtonPlus.style.display = 'none';
         ButtonMinus.style.display = 'none';
         ButtonAddToCart.style.display = 'inline';
-        ButtonPlus.addEventListener("click", () => {
+        ButtonAddToCart.addEventListener("click", () => {
             $.ajax({
                 url:`/api/cart/add?productId=${params.get("id")}`,
                 method:'post',

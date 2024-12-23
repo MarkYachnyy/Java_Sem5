@@ -31,7 +31,7 @@ public class AllProductsServlet extends HttpServlet {
 
     private void processAllProductsRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        resp.getWriter().println(gson.toJson(productService.getAllProducts()));
+        resp.getWriter().println(gson.toJson(productService.getAllProducts().stream().filter(p -> p.getStockQuantity() > 0).toList()));
         resp.getWriter().flush();
     }
 }

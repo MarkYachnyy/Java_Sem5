@@ -29,7 +29,7 @@ public class CartQuantityServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(!ServletUtils.checkCredentialsEncoded(req, userService)){
+        if(ServletUtils.checkCredentialsEncoded(req, userService)){
             Long userId = userService.findUserByEmail(req.getHeader("email")).getId();
             String productIdStr = req.getParameter("productId");
             if(productIdStr == null){

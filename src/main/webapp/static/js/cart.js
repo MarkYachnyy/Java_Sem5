@@ -56,7 +56,7 @@ function makeCartItemHTML(item){
     let html =
         `<div class="div__cart__item" id="div-cart-item-${item.productId}">
             <img src="/static/images/jonkler.webp" class="image__cart__item">
-            <a class="a__cart__item__product__name" href="/product?id=${item.productId}">product</a>
+            <a class="a__cart__item__product__name" href="/product?id=${item.productId}">${item.productName}</a>
             <button class="button__minus__one" id="button-minus-one-${item.productId}">-</button>
             <p class="p__cart__item__quantity">${item.quantity}</p>
             <button class="button__plus__one" id="button-plus-one-${item.productId}">+</button> 
